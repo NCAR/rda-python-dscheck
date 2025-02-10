@@ -1432,7 +1432,7 @@ def email_dsupdts(cnd, logact = 0):
       idx = pgrecs['cindex'][i]
       if idx > 0 and PgDBI.pgget("dcupdt", "", "cindex = {} AND pid > 0".format(idx), logact): continue
       idx = pgrecs['lindex'][i]
-      if PgLock.lock_update(idx, None, 1) <= 0: cxontinue
+      if PgLock.lock_update(idx, None, 1) <= 0: continue
       pgrec = PgDBI.pgget("dlupdt", "emnote", "lindex = {}".format(idx), logact)
       if pgrec['emnote']:
          sent = 1 if(PgLOG.send_customized_email("Updtidx", pgrec['emnote'], emlact) and

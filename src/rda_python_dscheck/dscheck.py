@@ -155,7 +155,7 @@ def email_check_info():
 
    for i in range(allcnt):
       if i > 0: mbuf += PgLOG.PGLOG['SEPLINE']
-      mbuf += build_check_message(onerecord(pgrecs, i))
+      mbuf += build_check_message(PgUtil.onerecord(pgrecs, i))
 
    if 'CC' in PgOPT.params: PgLOG.add_carbon_copy(PgOPT.params['CC'])
    subject += " found"
@@ -493,7 +493,7 @@ def unlock_checks():
 
       if ALLCNT > 1: PgLOG.pglog("{} of {} check{} unlocked from RDADB".format(modcnt, ALLCNT, s), PgLOG.LOGWRN)
    else:
-      cnd = "lockhost = '{}' AND ".format(get_host(1))
+      cnd = "lockhost = '{}' AND ".format(PgLOG.get_host(1))
       PgCheck.check_dsrqst_locks(cnd, PgOPT.PGOPT['extlog'])
       PgCheck.check_dsupdt_locks(cnd, PgOPT.PGOPT['extlog'])
       PgCheck.check_dscheck_locks(cnd, PgOPT.PGOPT['extlog'])
