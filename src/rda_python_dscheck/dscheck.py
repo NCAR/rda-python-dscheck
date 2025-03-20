@@ -36,6 +36,7 @@ ALLCNT = 0  # global counting variables
 def main():
 
    aname = 'dscheck'
+   PgLOG.set_help_path(__file__)
    PgOPT.parsing_input(aname)
    PgCheck.check_dscheck_options(PgOPT.PGOPT['CACT'], aname)
    start_action()
