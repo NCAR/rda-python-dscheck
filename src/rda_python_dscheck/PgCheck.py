@@ -370,7 +370,8 @@ def start_dschecks(cnd, logact = 0):
    if not CHKHOST['chkhost']: email_dschecks(cnd, logact)
    purge_dschecks(cnd, logact)
 
-   if 'NC' in PgOPT.params or not CHKHOST['chkhost']: return 0 
+#   if 'NC' in PgOPT.params or not CHKHOST['chkhost']: return 0 
+   if 'NC' in PgOPT.params: return 0 
    if CHKHOST['isbatch'] and 'CP' in PgOPT.params: check_dscheck_pends(cnd, logact)
 #   set_dscheck_options(CHKHOST['chkhost'], cnd, logact)
    reset_process_limits()
@@ -406,10 +407,7 @@ def check_dscheck_locks(cnd, logact = 0):
    dtime = ltime - PgSIG.PGSIG['DTIME']
    ctime = ltime - PgSIG.PGSIG['CTIME']
    rtime = ltime - PgSIG.PGSIG['RTIME']
-   if CHKHOST['chkhost']:
-      cnd += "lockhost {} AND (stttime = 0 OR chktime < {})".format(CHKHOST['hostcond'], dtime)
-   else:
-      cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost = '{}' OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost = '{}' OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
 
    pgrecs = PgDBI.pgmget("dscheck", "*", cnd, logact)
    cnt = (len(pgrecs['cindex']) if pgrecs else 0)
@@ -941,8 +939,8 @@ def skip_dscheck_record(pgrec, host, logact = 0):
 def start_dsrqsts(cnd, logact = 0):
 
    check_dsrqst_locks(cnd, logact)
-   if CHKHOST['chkhost']: return 1
-   email_dsrqsts(cnd, logact)
+#   if CHKHOST['chkhost']: return 1
+   if not CHKHOST['chkhost']: email_dsrqsts(cnd, logact)
    purge_dsrqsts(cnd, logact)
    rcnd = cnd
    rcnd += ("status = 'Q' AND rqsttype <> 'C' AND (pid = 0 OR pid < ptcount) AND " +
@@ -1114,10 +1112,7 @@ def check_dsrqst_locks(cnd, logact = 0):
    dtime = ltime - PgSIG.PGSIG['DTIME']
    ctime = ltime - PgSIG.PGSIG['CTIME']
    rtime = ltime - PgSIG.PGSIG['RTIME']
-   if CHKHOST['chkhost']:
-      cnd += "lockhost {} AND locktime < {}".format(CHKHOST['hostcond'], dtime)
-   else:
-      cnd += "locktime > 0 AND (locktime < {} OR locktime < {} AND lockhost = '{}' OR locktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "locktime > 0 AND (locktime < {} OR locktime < {} AND lockhost = '{}' OR locktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
    check_partition_locks(cnd, ltime, logact)   # check partitions first
 
    pgrecs = PgDBI.pgmget("dsrqst", "rindex, lockhost, pid, locktime", cnd, logact)
@@ -1259,9 +1254,9 @@ def start_dsupdts(cnd, logact = 0):
 
    ctime = PgUtil.curtime(1)
    check_dsupdt_locks(cnd, logact)
-   if CHKHOST['chkhost']: return 0
-   email_dsupdt_controls(cnd, logact)
-   email_dsupdts(cnd, logact)
+   if not CHKHOST['chkhost']:
+      email_dsupdt_controls(cnd, logact)
+      email_dsupdts(cnd, logact)
 
    cnd += "pid = 0 and cntltime <= '{}' and action > '' AND einfo IS NULL ORDER by cntltime".format(ctime)
    pgrecs = PgDBI.pgmget("dcupdt", "*", cnd, logact)
@@ -1325,10 +1320,7 @@ def check_dsupdt_locks(ocnd, logact = 0):
    cnd = ocnd + "pid > 0 AND "
    ctime = ltime - 4*PgSIG.PGSIG['CTIME']
    rtime = ltime - PgSIG.PGSIG['RTIME']
-   if CHKHOST['chkhost']:
-      cnd += "lockhost {} AND chktime < {}".format(CHKHOST['hostcond'], dtime)
-   else:
-      cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost = '{}' OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost = '{}' OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
 
    pgrecs = PgDBI.pgmget("dcupdt", "cindex, lockhost, pid, chktime", cnd, logact)
    cnt = (len(pgrecs['cindex']) if pgrecs else 0)
@@ -1359,10 +1351,7 @@ def check_dsupdt_locks(ocnd, logact = 0):
    if cnt > 1: PgLOG.pglog("{} of {} DSUPDT Controls unlocked on {}".format(lcnt, cnt, PgLOG.PGLOG['HOSTNAME']), PgLOG.WARNLG)
 
    cnd = ocnd + "pid > 0 AND locktime > 0 AND "
-   if CHKHOST['chkhost']:
-      cnd += "hostname {} AND locktime < {}".format(CHKHOST['hostcond'], dtime)
-   else:
-      cnd += "(locktime < {} OR locktime < {} AND hostname = '{}' OR locktime < {} AND hostname = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "(locktime < {} OR locktime < {} AND hostname = '{}' OR locktime < {} AND hostname = 'rda_config')".format(ctime, dtime, lochost, rtime)
 
    pgrecs = PgDBI.pgmget("dlupdt", "lindex, hostname, pid, locktime", cnd, logact)
    cnt = (len(pgrecs['lindex']) if pgrecs else 0)
