@@ -471,7 +471,6 @@ def update_dscheck_time(pgrec, ltime, logact = 0):
       info = PgSIG.get_pbs_info(pgrec['pid'], 0, logact)
       if info:
          stat = info['State']
-         if stat == 'Q': stat = 'P'
          if stat != pgrec['status']: record['status'] = stat
    else:
       if pgrec['lockhost'] != PgLOG.PGLOG['HOSTNAME']: return    # connot update dscheck time
@@ -810,19 +809,10 @@ def get_pbs_options(pgrec, limit = 0, logact = 0):
 #
 def get_pbsqueue_option(pgrec):
 
-   cidx = pgrec['cindex']
-   for pname in PBSQUEUES:
-      if PBSQUEUES[pname]:
-         aname = pname
-      else:
-         qname = pname
-   pcnt = PgDBI.pgget("dscheck", '', "status = 'P' AND pbsqueue = '{}'".format(qname))
-   if pcnt > 1: qname = aname
-   if pgrec['pbsqueue'] != qname:
-      PgDBI.pgexec("UPDATE dscheck SET pbsqueue = '{}' WHERE cindex = {}".format(qname, cidx))
-      pgrec['pbsqueue'] = qname
+   qname = pgrec['pbsqueue']
+   if qname in PBSQUEUES: return PBSQUEUES[qname]
 
-   return PBSQUEUES[qname]
+   return None
 
 #
 #  build individual option string for given option name 
@@ -889,9 +879,7 @@ def fill_dscheck_info(ckrec, pid, host, logact = 0):
       record['pid'] = pid
       if host == PgLOG.PGLOG['PBSNAME']:
          info = PgSIG.get_pbs_info(pid, 0, logact, 2)
-         if info:
-            stat = info['State']
-            if stat == 'Q': stat = 'P'
+         if info: stat = info['State']
       else:
          record['runhost'] = PgLOG.PGLOG['HOSTNAME']
          record['bid'] = 0
