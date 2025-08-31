@@ -809,8 +809,8 @@ def get_pbs_options(pgrec, limit = 0, logact = 0):
 #
 def get_pbsqueue_option(pgrec):
 
-   pname = pgrec['pbsqueue']
-   if pname in PBSQUEUES: return PBSQUEUES[qname]
+   qname = pgrec['pbsqueue']
+   if qname in PBSQUEUES: return PBSQUEUES[qname]
 
    return None
 
