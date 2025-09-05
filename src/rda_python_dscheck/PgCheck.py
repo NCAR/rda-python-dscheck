@@ -367,13 +367,11 @@ def start_dschecks(cnd, logact = 0):
 
    rcnt = 0
    check_dscheck_locks(cnd, logact)
-   if not CHKHOST['chkhost']: email_dschecks(cnd, logact)
+   email_dschecks(cnd, logact)
    purge_dschecks(cnd, logact)
 
-#   if 'NC' in PgOPT.params or not CHKHOST['chkhost']: return 0 
    if 'NC' in PgOPT.params: return 0 
    if CHKHOST['isbatch'] and 'CP' in PgOPT.params: check_dscheck_pends(cnd, logact)
-#   set_dscheck_options(CHKHOST['chkhost'], cnd, logact)
    reset_process_limits()
    if CHKHOST['isbatch']: rcnt = PgDBI.pgget("dscheck", "", "lockhost = '{}' AND pid > 0".format(PgLOG.PGLOG['PBSNAME']), logact)
 
@@ -927,8 +925,7 @@ def skip_dscheck_record(pgrec, host, logact = 0):
 def start_dsrqsts(cnd, logact = 0):
 
    check_dsrqst_locks(cnd, logact)
-#   if CHKHOST['chkhost']: return 1
-   if not CHKHOST['chkhost']: email_dsrqsts(cnd, logact)
+   email_dsrqsts(cnd, logact)
    purge_dsrqsts(cnd, logact)
    rcnd = cnd
    rcnd += ("status = 'Q' AND rqsttype <> 'C' AND (pid = 0 OR pid < ptcount) AND " +
@@ -1242,9 +1239,8 @@ def start_dsupdts(cnd, logact = 0):
 
    ctime = PgUtil.curtime(1)
    check_dsupdt_locks(cnd, logact)
-   if not CHKHOST['chkhost']:
-      email_dsupdt_controls(cnd, logact)
-      email_dsupdts(cnd, logact)
+   email_dsupdt_controls(cnd, logact)
+   email_dsupdts(cnd, logact)
 
    cnd += "pid = 0 and cntltime <= '{}' and action > '' AND einfo IS NULL ORDER by cntltime".format(ctime)
    pgrecs = PgDBI.pgmget("dcupdt", "*", cnd, logact)
