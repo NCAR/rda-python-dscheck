@@ -602,10 +602,7 @@ def handle_dschecks():
 def send_error_email():
    
    msg = "Error message for DSCHECK on " + PgLOG.PGLOG['HOSTNAME']
-
-   PgLOG.set_email(msg, PgLOG.EMLTOP)
-   msg = PgLOG.send_email(msg)
-   PgLOG.pglog(msg, PgLOG.MSGLOG|PgLOG.FRCLOG)
+   PgLOG.send_email(msg)
 
 #
 # prepare a summary string for quit
