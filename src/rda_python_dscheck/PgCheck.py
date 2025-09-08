@@ -405,7 +405,7 @@ def check_dscheck_locks(cnd, logact = 0):
    dtime = ltime - PgSIG.PGSIG['DTIME']
    ctime = ltime - PgSIG.PGSIG['CTIME']
    rtime = ltime - PgSIG.PGSIG['RTIME']
-   cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost = '{}' OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost {} OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, CHKHOST['hostcond'], rtime)
 
    pgrecs = PgDBI.pgmget("dscheck", "*", cnd, logact)
    cnt = (len(pgrecs['cindex']) if pgrecs else 0)
@@ -1097,7 +1097,7 @@ def check_dsrqst_locks(cnd, logact = 0):
    dtime = ltime - PgSIG.PGSIG['DTIME']
    ctime = ltime - PgSIG.PGSIG['CTIME']
    rtime = ltime - PgSIG.PGSIG['RTIME']
-   cnd += "locktime > 0 AND (locktime < {} OR locktime < {} AND lockhost = '{}' OR locktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "locktime > 0 AND (locktime < {} OR locktime < {} AND lockhost {} OR locktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, CHKHOST['hostcond'], rtime)
    check_partition_locks(cnd, ltime, logact)   # check partitions first
 
    pgrecs = PgDBI.pgmget("dsrqst", "rindex, lockhost, pid, locktime", cnd, logact)
@@ -1304,7 +1304,7 @@ def check_dsupdt_locks(ocnd, logact = 0):
    cnd = ocnd + "pid > 0 AND "
    ctime = ltime - 4*PgSIG.PGSIG['CTIME']
    rtime = ltime - PgSIG.PGSIG['RTIME']
-   cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost = '{}' OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "chktime > 0 AND (chktime < {} OR chktime < {} AND lockhost {} OR chktime < {} AND lockhost = 'rda_config')".format(ctime, dtime, CHKHOST['hostcond'], rtime)
 
    pgrecs = PgDBI.pgmget("dcupdt", "cindex, lockhost, pid, chktime", cnd, logact)
    cnt = (len(pgrecs['cindex']) if pgrecs else 0)
@@ -1335,7 +1335,7 @@ def check_dsupdt_locks(ocnd, logact = 0):
    if cnt > 1: PgLOG.pglog("{} of {} DSUPDT Controls unlocked on {}".format(lcnt, cnt, PgLOG.PGLOG['HOSTNAME']), PgLOG.WARNLG)
 
    cnd = ocnd + "pid > 0 AND locktime > 0 AND "
-   cnd += "(locktime < {} OR locktime < {} AND hostname = '{}' OR locktime < {} AND hostname = 'rda_config')".format(ctime, dtime, lochost, rtime)
+   cnd += "(locktime < {} OR locktime < {} AND hostname {} OR locktime < {} AND hostname = 'rda_config')".format(ctime, dtime, CHKHOST['hostcond'], rtime)
 
    pgrecs = PgDBI.pgmget("dlupdt", "lindex, hostname, pid, locktime", cnd, logact)
    cnt = (len(pgrecs['lindex']) if pgrecs else 0)
