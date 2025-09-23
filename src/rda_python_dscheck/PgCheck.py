@@ -211,7 +211,7 @@ def check_dscheck_options(cact, aname):
       "Miss check index per Info option -CI(-CheckIndex)",
       "Need Machine Hostname per -HN for new daemon control",
       "Need Application command name per -CM for new daemon control",
-      "Must be {} to process Checks in daemon mode".format(PgLOG.PGLOG['RDAUSER']),
+      "Must be {} to process Checks in daemon mode".format(PgLOG.PGLOG['GDEXUSER']),
       "Miss Command information per Info option -CM(-Command)",
    ]
    erridx = -1
@@ -223,7 +223,7 @@ def check_dscheck_options(cact, aname):
    if 'DM' in PgOPT.params:
       if cact != "PC":
          erridx = 0
-      elif PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['RDAUSER']:
+      elif PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['GDEXUSER']:
          erridx = 5
       elif 'CI' in PgOPT.params:
          erridx = 1
@@ -280,7 +280,7 @@ def check_dscheck_options(cact, aname):
       wtime = PgOPT.params['WI'] if 'WI' in PgOPT.params else 30
       logon = PgOPT.params['LO'] if 'LO' in PgOPT.params else 1
       PgSIG.start_none_daemon(aname, cact, PgOPT.params['LN'], 1, wtime, logon)
-      if not ('CI' in PgOPT.params or 'DS' in PgOPT.params or PgOPT.params['LN'] == PgLOG.PGLOG['RDAUSER']):
+      if not ('CI' in PgOPT.params or 'DS' in PgOPT.params or PgOPT.params['LN'] == PgLOG.PGLOG['GDEXUSER']):
          PgOPT.set_default_value("SN", PgOPT.params['LN'])
 
    # minimal wait interval in seconds for next check
@@ -509,8 +509,7 @@ def dscheck_runtime(start, end = None):
 #
 def purge_dschecks(cnd, logact = 0):
 
-   cnd += "pid = 0 AND einfo IS NULL AND bid "
-   cnd += ('> 0' if CHKHOST['curhost'] == PgLOG.PGLOG['PGBATCH'] else '= 0')
+   cnd += "pid = 0 AND einfo IS NULL"
    pgrecs = PgDBI.pgmget("dscheck", "*", cnd, logact)
    cnt = (len(pgrecs['cindex']) if pgrecs else 0)
    ctime = int(time.time()) - PgSIG.PGSIG['CTIME']
@@ -582,7 +581,7 @@ def start_one_dscheck(pgrec, logact = 0):
 
    lidx = get_process_host(limits, pgrec['hostname'], pgrec['command'], pgrec['action'], logact)
    if lidx < 0 or skip_dscheck_record(pgrec, host, logact): return 0
-   cmd = "pgstart_{} ".format(specialist) if PgLOG.PGLOG['CURUID'] == PgLOG.PGLOG['RDAUSER'] else ""
+   cmd = "pgstart_{} ".format(specialist) if PgLOG.PGLOG['CURUID'] == PgLOG.PGLOG['GDEXUSER'] else ""
    if not PgUtil.pgcmp(host, PgLOG.PGLOG['PBSNAME'], 1):
       if reach_dataset_limit(pgrec): return 0
       cmd += get_specialist_shell(specialist) + 'qsub '
@@ -1533,7 +1532,7 @@ def validate_daemons():
          if not pgrec:
             PgOPT.action_error("Daemon Control Index '{}' is not in RDADB".format(val))
          elif(PgOPT.OPTS[PgOPT.PGOPT['CACT']][2] > 0 and PgOPT.params['LN'] != pgrec['specialist'] and
-              PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['RDAUSER']):
+              PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['GDEXUSER']):
             PgOPT.action_error("{}: must be {}, owner of Daemon Control Index {}".format(PgOPT.params['LN'], pgrec['specialist'], val))
    else: # found none-equal condition sign
       pgrec = PgDBI.pgmget("dsdaemon", "DISTINCT dindex",
@@ -1574,7 +1573,7 @@ def validate_checks():
             if not pgrec:
                PgOPT.action_error("Check Index '{}' is not in RDADB".format(val))
             elif(PgOPT.OPTS[PgOPT.PGOPT['CACT']][2] > 0 and PgOPT.params['LN'] != pgrec['specialist'] and
-                 PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['RDAUSER']):
+                 PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['GDEXUSER']):
                PgOPT.action_error("{}: must be {}, owner of Check Index {}".format(PgOPT.params['LN'], pgrec['specialist'], val))
       else: # found none-equal condition sign
          pgrec = PgDBI.pgmget("dscheck", "cindex", PgDBI.get_field_condition("cindex", PgOPT.params['CI'], 0, 1), PgOPT.PGOPT['extlog'])
