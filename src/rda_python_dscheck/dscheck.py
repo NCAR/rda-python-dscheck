@@ -279,7 +279,7 @@ def set_daemon_info():
          if pgrec:
             modcnt += PgDBI.pgupdt(tname, record, cnd, PgOPT.PGOPT['extlog'])
          else:
-            if 'specialist' not in record and PgOPT.params['LN'] != PgLOG.PGLOG['RDAUSER']: record['specialist'] = PgOPT.params['LN']
+            if 'specialist' not in record and PgOPT.params['LN'] != PgLOG.PGLOG['GDEXUSER']: record['specialist'] = PgOPT.params['LN']
             didx = PgDBI.pgadd(tname, record, PgOPT.PGOPT['extlog']|PgLOG.AUTOID)
             if didx:
                PgLOG.pglog("Daemon Control Index {} added".format(didx), PgOPT.PGOPT['wrnlog'])
@@ -506,12 +506,12 @@ def process_dschecks():
 
    logact = PgLOG.LOGERR
 
-   if PgLOG.PGLOG['CURUID'] == PgLOG.PGLOG['RDAUSER'] and (time.time()%(3*PgSIG.PGSIG['CTIME'])) < 60:
+   if PgLOG.PGLOG['CURUID'] == PgLOG.PGLOG['GDEXUSER'] and (time.time()%(3*PgSIG.PGSIG['CTIME'])) < 60:
       logact |= PgLOG.EMEROL
 
    cnd = PgOPT.get_hash_condition("dscheck", "ST", None, 1)
    if cnd: cnd += " AND "
-   if 'SN' not in PgOPT.params and PgOPT.params['LN'] != PgLOG.PGLOG['RDAUSER']:
+   if 'SN' not in PgOPT.params and PgOPT.params['LN'] != PgLOG.PGLOG['GDEXUSER']:
        cnd += "specialist = '{}' AND ".format(PgOPT.params['LN'])
 
    if 'WR' in PgOPT.params: PgCheck.start_dsrqsts(cnd, logact)
@@ -530,12 +530,12 @@ def process_dscheck_options():
 
    logact = PgLOG.LOGERR
 
-   if PgLOG.PGLOG['CURUID'] == PgLOG.PGLOG['RDAUSER'] and (time.time()%(3*PgSIG.PGSIG['CTIME'])) < 60:
+   if PgLOG.PGLOG['CURUID'] == PgLOG.PGLOG['GDEXUSER'] and (time.time()%(3*PgSIG.PGSIG['CTIME'])) < 60:
       logact |= PgLOG.EMEROL
 
    cnd = PgOPT.get_hash_condition("dscheck", "ST", None, 1)
    if cnd: cnd += " AND "
-   if 'SN' not in PgOPT.params and PgOPT.params['LN'] != PgLOG.PGLOG['RDAUSER']:
+   if 'SN' not in PgOPT.params and PgOPT.params['LN'] != PgLOG.PGLOG['GDEXUSER']:
        cnd += "specialist = '{}' AND ".format(PgOPT.params['LN'])
 
    acnd = PgOPT.get_hash_condition("dscheck", None, "ST", 1)
@@ -654,7 +654,7 @@ def check_host_connection():
       hostname = pgrecs['hostname'][i]
       cmd = "ssh {} ps".format(hostname)
       if specialist != PgLOG.PGLOG['CURUID']:
-         if PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['RDAUSER']:
+         if PgLOG.PGLOG['CURUID'] != PgLOG.PGLOG['GDEXUSER']:
             PgLOG.pglog("{}: Cannot check connection to '{}' for {}".format(PgLOG.PGLOG['CURUID'], hostname, specialist), PgLOG.LOGERR)
             continue
          else:
