@@ -3,4 +3,6 @@
 import pytest
 
 def test_something():
-   pass
+   import rda_python_dscheck.PgCheck
+   import rda_python_dscheck.pg_check
+   import rda_python_dscheck.dscheck
