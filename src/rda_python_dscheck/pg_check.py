@@ -19,7 +19,7 @@ import time
 from rda_python_common.pg_cmd import PgCMD
 from rda_python_common.pg_opt import PgOPT
 
-class PgOPT(PgCMD):
+class PgCheck(PgOPT, PgCMD):
 
    def __init__(self):
       super().__init__()  # initialize parent class
