@@ -208,7 +208,7 @@ class PgOPT(PgCMD):
       elif cact == "DL":
          if not ('CI' in self.params or 'DI' in self.params): erridx = 2
       elif cact == 'SD':
-         validate_daemons()
+         self.validate_daemons()
          if 'SD' in self.params:
             if 'HN' not in self.params:
                erridx = 3
@@ -322,7 +322,7 @@ class PgOPT(PgCMD):
       self.email_dschecks(cnd, logact)
       self.purge_dschecks(cnd, logact)
       if 'NC' in self.params: return 0 
-      if self.CHKHOST['isbatch'] and 'CP' in self.params: self, check_dscheck_pends(cnd, logact)
+      if self.CHKHOST['isbatch'] and 'CP' in self.params: self.check_dscheck_pends(cnd, logact)
       self.reset_process_limits()
       if self.CHKHOST['isbatch']: rcnt = self.pgget("dscheck", "", "lockhost = '{}' AND pid > 0".format(self.PGLOG['PBSNAME']), logact)
       cnd += "pid = 0 AND status <> 'D' AND einfo IS NULL AND (qoptions IS NULL OR LEFT(qoptions, 1) != '!') ORDER by hostname DESC, cindex"

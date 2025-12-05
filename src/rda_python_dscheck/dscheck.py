@@ -437,22 +437,6 @@ class DsCheck(PgCheck):
       if acnd: acnd += " AND "
       self.set_dscheck_options(self.get_host(1), cnd + acnd, logact)
       if self.PGLOG['ERRCNT']: self.send_error_email()
-   
-   #
-   # send an email notice to the running specialist
-   #
-   def send_email_notice(cmd, pgrec):
-   
-      s = 's' if pgrec['tcount'] > 1 else ''
-      msg = ("Check Index {} for command:\n  {}\n".format(pgrec['cindex'], cmd) +
-             "under '{}' has be executed {} time{}.\n".format(pgrec['workdir'], pgrec['tcount'], s))
-      if pgrec['errmsg']:
-         msg += "Error message from previous execution:\n  {}\n".format(pgrec['errmsg'])
-   
-      msg += ("If there is any problem, please fix it, delete the dscheck record via " +
-              "'dscheck dl -ci '\nand restart the command.\n".format(pgrec['cindex']))
-   
-      self.send_email("Check Index {} reprocessed {} time{}".format(pgrec['cindex'], pgrec['tcount'], s), None, msg) 
 
    # rdadata daemon handles the daemon controls
    def handle_dschecks(self):
@@ -483,7 +467,7 @@ class DsCheck(PgCheck):
       self.stop_daemon(self.prepare_quit(ccnt, rcnt, ucnt))
 
    # send an error email to the specialist
-   def send_error_email():
+   def send_error_email(self):
       msg = "Error message for DSCHECK on " + self.PGLOG['HOSTNAME']
       self.send_email(msg)
 
