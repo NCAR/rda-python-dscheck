@@ -1,15 +1,15 @@
 ###############################################################################
 #
-#     Title : pg_check.py
-#    Author : Zaihua Ji,  zji@ucar.edu
-#      Date : 08/26/2020
+#     Title: pg_check.py
+#    Author: Zaihua Ji,  zji@ucar.edu
+#      Date: 08/26/2020
 #             2025-02-10 transferred to package rda_python_dscheck from
 #             https://github.com/NCAR/rda-shared-libraries.git
 #             2025-12-04 convert to class PgOPT
-#   Purpose : python library module for for holding some global variables and
+#   Purpose: python library module for for holding some global variables and
 #             functions for dscheck utility
 #
-#    Github : https://github.com/NCAR/rda-python-dscheck.git
+#    Github: https://github.com/NCAR/rda-python-dscheck.git
 #
 ###############################################################################
 #
@@ -30,147 +30,147 @@ class PgCheck(PgOPT, PgCMD):
       self.SHELLS = {}      # shell names used by specialists
       # define initially the needed option values
       self.OPTS.update({
-         'PC' : [0x0004, 'ProcessCheck',    1],
-         'AC' : [0x0008, 'AddCheck',        1],
-         'GD' : [0x0010, 'GetDaemon',       0],
-         'SD' : [0x0020, 'SetDaemon',       1],
-         'GC' : [0x0040, 'GetCheck',        0],
-         'DL' : [0x0080, 'Delete',          1],
-         'UL' : [0x0100, 'UnLockCheck',     1],
-         'EC' : [0x0200, 'EmailCheck',      0],
-         'IC' : [0x0400, 'InterruptCheck',  1],
-         'CH' : [0x1000, 'CheckHost',       0],
-         'SO' : [0x1000, 'SetOptions',      1],      
-         'AW' : [0, 'AnyWhere',      0],
-         'BG' : [0, 'BackGround',    0],
-         'CP' : [0, 'CheckPending',  0],
-         'CS' : [0, 'CheckStatus',   0],
-         'FI' : [0, 'ForceInterrrupt', 0],
-         'FO' : [0, 'FormatOutput',  0],
-         'LO' : [0, 'LogOn',         0],
-         'MD' : [0, 'PgDataset',     3],
-         'NC' : [0, 'NoCommand',     0],
-         'ND' : [0, 'NewDaemon',     0],
-         'NT' : [0, 'NoTrim',        0],
-         'WR' : [0, 'WithdsRqst',    0],
-         'WU' : [0, 'WithdsUpdt',    0],
-         'DM' : [1, 'DaemonMode',    1],  # for action PC, start|quit|logon|logoff
-         'DV' : [1, 'Divider',       1],  # default to <:>
-         'ES' : [1, 'EqualSign',     1],  # default to <=>
-         'FN' : [1, 'FieldNames',     0],
-         'LH' : [1, 'LocalHost',      0,  ''],
-         'MT' : [1, 'MaxrunTime',     0],
-         'OF' : [1, 'OutputFile',     0],
-         'ON' : [1, 'OrderNames',     0],
-         'AO' : [1, 'ActOption',      1],  # default to <!>
-         'WI' : [1, 'WaitInterval',   1],
-         'AN' : [2, 'ActionName',     0],
-         'AV' : [2, 'ArgumentVector', 0],
-         'AX' : [2, 'ArgumenteXtra',  0],
-         'CC' : [2, 'CarbonCopy',     0],
-         'CD' : [2, 'CheckDate',    256],
-         'CI' : [2, 'CheckIndex',    16],
-         'CM' : [2, 'Command',        1],
-         'CT' : [2, 'CheckTime',     32],
-         'DB' : [2, 'Debug',          0],
-         'DC' : [2, 'DoneCount',     17],
-         'DF' : [2, 'DownFlags',      1],
-         'DI' : [2, 'DaemonIndex',   16],
-         'DS' : [2, 'Dataset',        1],
-         'ER' : [2, 'ERrormessage',   0],
-         'EV' : [2, 'Environments',   1],
-         'FC' : [2, 'FileCount',     17],
-         'HN' : [2, 'HostName',       1],
-         'IF' : [2, 'InputFile',      0],
-         'MC' : [2, 'MaxCount',      17],
-         'MH' : [2, 'MatchHost',      1],
-         'MO' : [2, 'Modules',        1],
-         'PI' : [2, 'ParentIndex',   17],
-         'PL' : [2, 'ProcessLimit',  17],
-         'PO' : [2, 'Priority',      17],
-         'PQ' : [2, 'PBSQueue',       0],
-         'QS' : [2, 'QSubOptions',    0],
-         'SN' : [2, 'Specialist',     1],
-         'ST' : [2, 'Status',         0],
-         'SZ' : [2, 'DataSize',      16],
-         'TC' : [2, 'TryCount',      17],
-         'WD' : [2, 'WorkDir',        0],
+         'PC': [0x0004, 'ProcessCheck',    1],
+         'AC': [0x0008, 'AddCheck',        1],
+         'GD': [0x0010, 'GetDaemon',       0],
+         'SD': [0x0020, 'SetDaemon',       1],
+         'GC': [0x0040, 'GetCheck',        0],
+         'DL': [0x0080, 'Delete',          1],
+         'UL': [0x0100, 'UnLockCheck',     1],
+         'EC': [0x0200, 'EmailCheck',      0],
+         'IC': [0x0400, 'InterruptCheck',  1],
+         'CH': [0x1000, 'CheckHost',       0],
+         'SO': [0x1000, 'SetOptions',      1],      
+         'AW': [0, 'AnyWhere',      0],
+         'BG': [0, 'BackGround',    0],
+         'CP': [0, 'CheckPending',  0],
+         'CS': [0, 'CheckStatus',   0],
+         'FI': [0, 'ForceInterrrupt', 0],
+         'FO': [0, 'FormatOutput',  0],
+         'LO': [0, 'LogOn',         0],
+         'MD': [0, 'PgDataset',     3],
+         'NC': [0, 'NoCommand',     0],
+         'ND': [0, 'NewDaemon',     0],
+         'NT': [0, 'NoTrim',        0],
+         'WR': [0, 'WithdsRqst',    0],
+         'WU': [0, 'WithdsUpdt',    0],
+         'DM': [1, 'DaemonMode',    1],  # for action PC, start|quit|logon|logoff
+         'DV': [1, 'Divider',       1],  # default to <:>
+         'ES': [1, 'EqualSign',     1],  # default to <=>
+         'FN': [1, 'FieldNames',     0],
+         'LH': [1, 'LocalHost',      0,  ''],
+         'MT': [1, 'MaxrunTime',     0],
+         'OF': [1, 'OutputFile',     0],
+         'ON': [1, 'OrderNames',     0],
+         'AO': [1, 'ActOption',      1],  # default to <!>
+         'WI': [1, 'WaitInterval',   1],
+         'AN': [2, 'ActionName',     0],
+         'AV': [2, 'ArgumentVector', 0],
+         'AX': [2, 'ArgumenteXtra',  0],
+         'CC': [2, 'CarbonCopy',     0],
+         'CD': [2, 'CheckDate',    256],
+         'CI': [2, 'CheckIndex',    16],
+         'CM': [2, 'Command',        1],
+         'CT': [2, 'CheckTime',     32],
+         'DB': [2, 'Debug',          0],
+         'DC': [2, 'DoneCount',     17],
+         'DF': [2, 'DownFlags',      1],
+         'DI': [2, 'DaemonIndex',   16],
+         'DS': [2, 'Dataset',        1],
+         'ER': [2, 'ERrormessage',   0],
+         'EV': [2, 'Environments',   1],
+         'FC': [2, 'FileCount',     17],
+         'HN': [2, 'HostName',       1],
+         'IF': [2, 'InputFile',      0],
+         'MC': [2, 'MaxCount',      17],
+         'MH': [2, 'MatchHost',      1],
+         'MO': [2, 'Modules',        1],
+         'PI': [2, 'ParentIndex',   17],
+         'PL': [2, 'ProcessLimit',  17],
+         'PO': [2, 'Priority',      17],
+         'PQ': [2, 'PBSQueue',       0],
+         'QS': [2, 'QSubOptions',    0],
+         'SN': [2, 'Specialist',     1],
+         'ST': [2, 'Status',         0],
+         'SZ': [2, 'DataSize',      16],
+         'TC': [2, 'TryCount',      17],
+         'WD': [2, 'WorkDir',        0],
       })
       self.ALIAS.update({
-         'AN' : ['Action'],
-         'BG' : ['b'],
-         'CF' : ['Confirmation', 'ConfirmAction'],
-         'CM' : ['CommandName'],
-         'DL' : ['RM', 'Remove'],
-         'DS' : ['Dsid', 'DatasetID'],
-         'DV' : ['Delimiter', 'Separater'],
-         'EV' : ['Envs'],
-         'GZ' : ['GMT', 'GreenwichZone', 'UTC'],
-         'MC' : ['MaximumCount', 'MaxTryCount'],
-         'MH' : ['MatchHostname'],
-         'NC' : ['NoRemoteCommand'],
-         'MO' : ['Mods'],
-         'PI' : ['ParentCheckIndex'],
-         'QS' : ['PBSOptions'],
-         'SO' : ['SetBatchOptions'],
-         'SZ' : ['Size', "ProcSize"],
-         'UL' : ['UnLock'],
-         'WD' : ["WorkDirectory"],
-         'WR' : ["WithRequest"],
-         'WU' : ["WithUpdate"],
+         'AN': ['Action'],
+         'BG': ['b'],
+         'CF': ['Confirmation', 'ConfirmAction'],
+         'CM': ['CommandName'],
+         'DL': ['RM', 'Remove'],
+         'DS': ['Dsid', 'DatasetID'],
+         'DV': ['Delimiter', 'Separater'],
+         'EV': ['Envs'],
+         'GZ': ['GMT', 'GreenwichZone', 'UTC'],
+         'MC': ['MaximumCount', 'MaxTryCount'],
+         'MH': ['MatchHostname'],
+         'NC': ['NoRemoteCommand'],
+         'MO': ['Mods'],
+         'PI': ['ParentCheckIndex'],
+         'QS': ['PBSOptions'],
+         'SO': ['SetBatchOptions'],
+         'SZ': ['Size', "ProcSize"],
+         'UL': ['UnLock'],
+         'WD': ["WorkDirectory"],
+         'WR': ["WithRequest"],
+         'WU': ["WithUpdate"],
       })
       self.TBLHASH['dscheck'] = {
         #SHORTNM KEYS DBFIELD
-         'C' : ['CI', "cindex",         0],
-         'O' : ['CM', "command",        1],
-         'V' : ['AV', "argv",           1],
-         'T' : ['DS', "dsid",           1],
-         'A' : ['AN', "action",         1],
-         'U' : ['ST', "status",         1],
-         'P' : ['PQ', "pbsqueue",       1],
-         'R' : ['PI', "pindex",         0],
-         'B' : ['DF', "dflags",         0],
-         'F' : ['FC', "fcount",         0],
-         'J' : ['DC', "dcount",         0],
-         'K' : ['TC', "tcount",         0],
-         'L' : ['MC', "mcount",         0],
-         'Z' : ['SZ', "size",           0],
-         'D' : ['CD', "date",           1],
-         'Y' : ['CT', "time",           1],
-         'H' : ['HN', "hostname",       1],
-         'N' : ['SN', "specialist",     1],
-         'W' : ['WD', "workdir",        1],
-         'M' : ['MO', "modules",        1],
-         'I' : ['EV', "environments",   1],
-         'Q' : ['QS', "qoptions",       1],
-         'X' : ['AX', "argextra",      -1],
-         'E' : ['ER', "errmsg",        -1],
+         'C': ['CI', "cindex",         0],
+         'O': ['CM', "command",        1],
+         'V': ['AV', "argv",           1],
+         'T': ['DS', "dsid",           1],
+         'A': ['AN', "action",         1],
+         'U': ['ST', "status",         1],
+         'P': ['PQ', "pbsqueue",       1],
+         'R': ['PI', "pindex",         0],
+         'B': ['DF', "dflags",         0],
+         'F': ['FC', "fcount",         0],
+         'J': ['DC', "dcount",         0],
+         'K': ['TC', "tcount",         0],
+         'L': ['MC', "mcount",         0],
+         'Z': ['SZ', "size",           0],
+         'D': ['CD', "date",           1],
+         'Y': ['CT', "time",           1],
+         'H': ['HN', "hostname",       1],
+         'N': ['SN', "specialist",     1],
+         'W': ['WD', "workdir",        1],
+         'M': ['MO', "modules",        1],
+         'I': ['EV', "environments",   1],
+         'Q': ['QS', "qoptions",       1],
+         'X': ['AX', "argextra",      -1],
+         'E': ['ER', "errmsg",        -1],
       }
       self.TBLHASH['dsdaemon'] = {
         #SHORTNM KEYS DBFIELD
-         'I' : ['DI', "dindex",         0],
-         'C' : ['CM', "command",        1],
-         'H' : ['HN', "hostname",       1],
-         'M' : ['MH', "matchhost",      1],
-         'S' : ['SN', "specialist",     1],
-         'P' : ['PL', "proclimit",      0],
-         'O' : ['PO', "priority",       0],
+         'I': ['DI', "dindex",         0],
+         'C': ['CM', "command",        1],
+         'H': ['HN', "hostname",       1],
+         'M': ['MH', "matchhost",      1],
+         'S': ['SN', "specialist",     1],
+         'P': ['PL', "proclimit",      0],
+         'O': ['PO', "priority",       0],
       }
       self.CHKHOST = {
-         'curhost' : self.get_host(1),
-         'chkhost' : None,
-         'hostcond' : None,
-         'isbatch' : 0
+         'curhost': self.get_host(1),
+         'chkhost': None,
+         'hostcond': None,
+         'isbatch': 0
       }
       self.PGOPT['dscheck']   = "COVTUPFJDNW"            # default
       self.PGOPT['chkall']    = "COVTAUPRBFJKLZDYHNWMIQXE"   # default to all   
       self.PGOPT['dsdaemon']  = "ICHQSPO"                 # default to all
       self.PGOPT['waitlimit'] = 280      # limit of C and P request checks at a time
       self.PGOPT['totallimit'] = 380     # maximum number of checks can be started on PBS
-      self.PBSQUEUES = {'rda' : None, 'htc' : 'casper@casper-pbs'}
-      self.PBSTIMES = {'default' : 21600, 'rda' : self.PGLOG['PBSTIME'], 'htc' : 86400}
-      #self.DOPTHOSTS = {'rda-work' : None, 'PBS' : ['!subconv -Q']}
-      self.DOPTHOSTS = {'rda-work' : None, 'PBS' : None, 'cron' : None}
+      self.PBSQUEUES = {'rda': None, 'htc': 'casper@casper-pbs'}
+      self.PBSTIMES = {'default': 21600, 'rda': self.PGLOG['PBSTIME'], 'htc': 86400}
+      #self.DOPTHOSTS = {'rda-work': None, 'PBS': ['!subconv -Q']}
+      self.DOPTHOSTS = {'rda-work': None, 'PBS': None, 'cron': None}
       self.DSLMTS = {}
       self.EMLMTS = {}
 
@@ -280,7 +280,7 @@ class PgCheck(PgOPT, PgCMD):
          self.PLIMITS[ckey] = 0
          return 0
       j = 0
-      self.PLIMITS[ckey] = {'host' : [], 'priority' : [], 'acnt' : [], 'match' : [], 'pcnd' : []}
+      self.PLIMITS[ckey] = {'host': [], 'priority': [], 'acnt': [], 'match': [], 'pcnd': []}
       for i in range(cnt):
          if pgrecs['proclimit'][i] <= 0: continue
          host = pgrecs['hostname'][i]
@@ -366,7 +366,7 @@ class PgCheck(PgOPT, PgCMD):
             else:
                self.update_dscheck_time(pgrec, ltime, logact)
          elif not pgrec['lockhost'] or pgrec['lockhost'] == 'rda_config':
-            record = {'pid' : 0, 'lockhost' : ''}
+            record = {'pid': 0, 'lockhost': ''}
             if self.pgupdt("dscheck", record, "cindex = {} AND pid = {}".format(cidx, pgrec['pid']), logact):
                self.pglog("CHK{}: unlocked {}".format(cidx, lmsg), self.LOGWRN)
                lcnt += 1
@@ -398,7 +398,7 @@ class PgCheck(PgOPT, PgCMD):
    # update dscheck time in case in pending status or
    # the command does not updateupdates not on time by itself
    def update_dscheck_time(self, pgrec, ltime, logact = 0):
-      record = {'chktime' : ltime}
+      record = {'chktime': ltime}
       if(self.CHKHOST['chkhost'] and self.CHKHOST['chkhost'] == self.PGLOG['PBSNAME']
          and pgrec['lockhost'] == self.PGLOG['PBSNAME']):
          info = self.get_pbs_info(pgrec['pid'], 0, logact)
@@ -756,7 +756,7 @@ class PgCheck(PgOPT, PgCMD):
          newrec['stttime'] > pgrec['stttime'] or newrec['tcount'] > pgrec['tcount']): return 1
       if self.lock_dscheck(pgrec['cindex'], 1) <= 0: return 1
       if pgrec['subtime'] or pgrec['stttime']:
-         newrec = {'stttime' : 0, 'subtime' : 0, 'runhost' : '', 'bid' : 0}
+         newrec = {'stttime': 0, 'subtime': 0, 'runhost': '', 'bid': 0}
          (newrec['ttltime'], newrec['quetime']) = self.get_dscheck_runtime(pgrec)
          if not self.pgupdt("dscheck", newrec, "cindex = {}".format(pgrec['cindex']), logact): return 1
       return 0
@@ -808,7 +808,7 @@ class PgCheck(PgOPT, PgCMD):
    def validate_dsrqst_partitions(self, pgrec, logact = 0):
       pgctl = self.get_dsrqst_control(pgrec, logact)
       if pgctl and (pgctl['ptlimit'] or pgctl['ptsize']): return True
-      record = {'ptcount' : 1}
+      record = {'ptcount': 1}
       pgrec['ptcount'] = 1
       if pgrec['ptlimit']: pgrec['ptlimit'] = record['ptlimit'] = 0
       if pgrec['ptsize']: pgrec['ptsize'] = record['ptsize'] = 0
@@ -828,7 +828,7 @@ class PgCheck(PgOPT, PgCMD):
          if self.lock_dscheck(pgrec['cindex'], 1) <= 0: continue
          qoptions = self.build_dscheck_options(pgrec, 'qoptions', 'PBS')
          if not qoptions and pgrec['status'] == 'E': continue  # failed evaluating qoptions
-         record = {'pid' : 0, 'qoptions': qoptions}
+         record = {'pid': 0, 'qoptions': qoptions}
          qcnt += self.pgupdt('dscheck', record, "cindex = {}".format(pgrec['cindex']), self.PGOPT['errlog'])
       if qcnt and cnt > 1: self.pglog("{} of {} DSCHECK PBS options Dynamically set on {}".format(qcnt, cnt, self.PGLOG['HOSTNAME']), self.WARNLG)
 
@@ -927,7 +927,7 @@ class PgCheck(PgOPT, PgCMD):
                self.pglog("Rqst{}: time updated for {}".format(ridx, lmsg), self.LOGWRN|self.FRCLOG)
          elif(not pgrec['lockhost'] or pgrec['lockhost'] == 'rda_config' or pgrec['lockhost'] == 'partition' and
               not self.pgget('ptrqst', '', "rindex = {} AND pid > 0".format(ridx), logact)):
-            record = {'pid' : 0, 'lockhost' : ''}
+            record = {'pid': 0, 'lockhost': ''}
             if self.pgupdt("dsrqst", record, "rindex = {} AND pid = {}".format(ridx, pgrec['pid']), logact):
                self.pglog("Rqst{}: unlocked {}".format(ridx, pgrec['lockhost'], pgrec['pid'], self.current_datetime(ltime)), self.LOGWRN)
                lcnt += 1
@@ -956,7 +956,7 @@ class PgCheck(PgOPT, PgCMD):
                not self.pgget("dscheck", "", "oindex = {} AND command = 'dsrqst' AND otype = 'P'".format(pidx))):
                self.pglog("RPT{}: time updated for {}".format(pidx, lmsg), self.LOGWRN)
          elif not pgrec['lockhost'] or pgrec['lockhost'] == 'rda_config':
-            record = {'pid' : 0, 'lockhost' : ''}
+            record = {'pid': 0, 'lockhost': ''}
             if self.pgupdt("ptrqst", record, "pindex = {} AND pid = {}".format(pidx, pgrec['pid']), logact):
                self.pglog("RPT{}: unlocked {}".format(pidx, lmsg), self.LOGWRN)
                lcnt += 1
@@ -973,7 +973,7 @@ class PgCheck(PgOPT, PgCMD):
       cnd += " OR status = 'O' AND (date_purge < '{}' OR date_purge = '{}' AND time_purge < '{}')) ORDER BY rindex".format(sdate, sdate, stime)                   
       pgrecs = self.pgmget("dsrqst", "rindex, dsid, email, specialist", cnd, logact)
       cnt = (len(pgrecs['rindex']) if pgrecs else 0)
-      pgctl = {'qoptions' : "-l walltime=1:00:00"}
+      pgctl = {'qoptions': "-l walltime=1:00:00"}
       pcnt = 0
       for i in range(cnt):
          pgrec = self.onerecord(pgrecs, i)
@@ -1099,7 +1099,7 @@ class PgCheck(PgOPT, PgCMD):
                not self.pgget("dscheck", "", "oindex = {} AND command = 'dsupdt'".format(idx))):
                self.pglog("UC{}: time updated for {}".format(idx, lmsg), self.LOGWRN)
          elif not pgrec['lockhost'] or pgrec['lockhost'] == 'rda_config':
-            record = {'pid' : 0, 'lockhost' : ''}
+            record = {'pid': 0, 'lockhost': ''}
             if self.pgupdt("dcupdt", record, "cindex = {} AND pid = {}".format(idx, pgrec['pid']), logact):
                self.pglog("UC{}: unlocked {}".format(idx, lmsg), self.LOGWRN)
                lcnt += 1
@@ -1124,7 +1124,7 @@ class PgCheck(PgOPT, PgCMD):
                continue
             self.pgexec("UPDATE dlupdt SET locktime = {} WHERE lindex = {} AND pid = {}".format(ltime, idx, pgrec['pid']), logact)
          elif not pgrec['hostname'] or pgrec['hostname'] == 'rda_config':
-            record = {'pid' : 0, 'hostname' : ''}
+            record = {'pid': 0, 'hostname': ''}
             if self.pgupdt("dlupdt", record, "lindex = {} AND pid = {}".format(idx, pgrec['pid']), logact):
                self.pglog("Updt{}: unlocked {}".format(idx, lmsg), self.LOGWRN)
                lcnt += 1
@@ -1188,8 +1188,8 @@ class PgCheck(PgOPT, PgCMD):
          argv = argv[0:100]
       else:
          argextra = None
-      record = {'command' : cmd, 'argv' : argv, 'specialist' : specialist, 'workdir' : workdir,
-                'dsid' : dsid, 'action' : action, 'oindex' : oindex, 'otype' : otype}
+      record = {'command': cmd, 'argv': argv, 'specialist': specialist, 'workdir': workdir,
+                'dsid': dsid, 'action': action, 'oindex': oindex, 'otype': otype}
       (record['date'], record['time']) = self.get_date_time()
       if argextra: record['argextra'] = argextra
       if 'PI' in self.params: record['pindex'] = self.params['PI'][0]
@@ -1225,16 +1225,16 @@ class PgCheck(PgOPT, PgCMD):
    @staticmethod
    def dscheck_status(stat):
       STATUS = {
-         'C' : "Created",
-         'D' : "Done",
-         'E' : "Exit",
-         'F' : "Finished",
-         'H' : "Held",
-         'I' : "Interrupted",
-         'P' : "Pending",
-         'Q' : "Queueing",
-         'R' : "Run",
-         'S' : "Suspended",
+         'C': "Created",
+         'D': "Done",
+         'E': "Exit",
+         'F': "Finished",
+         'H': "Held",
+         'I': "Interrupted",
+         'P': "Pending",
+         'Q': "Queueing",
+         'R': "Run",
+         'S': "Suspended",
       }
       return (STATUS[stat] if stat in STATUS else "Unknown")
 

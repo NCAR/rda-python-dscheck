@@ -123,7 +123,7 @@ class DsCheck(PgCheck):
          ss = "is"
       subject = "{} active Check Record{}".format(allcnt, s)
       mbuf = "{} {} listed:\n".format(subject, ss)
-      pgrecs = {'status' : self.get_check_status(pgrecs, allcnt)}
+      pgrecs = {'status': self.get_check_status(pgrecs, allcnt)}
       for i in range(allcnt):
          if i > 0: mbuf += self.PGLOG['SEPLINE']
          mbuf += self.build_check_message(self.onerecord(pgrecs, i))
@@ -362,7 +362,7 @@ class DsCheck(PgCheck):
             if dlupdt and self.pgexec("UPDATE dlupdt set pid = 0 WHERE lindex = {}".format(dlupdt['lindex']), self.PGOPT['extlog']):
                self.pglog("Update Local File Index {} unlocked".format(dlupdt['lindex']), self.LOGWRN)
          elif pgrec['command'] == 'dsrqst':
-            record = {'status' : 'I', 'pid' : 0}
+            record = {'status': 'I', 'pid': 0}
             if pgrec['otype'] == 'P':
                table = "ptrqst"
                field = "pindex"
@@ -494,7 +494,7 @@ class DsCheck(PgCheck):
       hash = self.TBLHASH[tname]
       condition = self.get_hash_condition(tname, None, "H", 1)
       if 'HN' in self.params:
-         pgrecs = {'specialist' : [], 'hostname' : []}
+         pgrecs = {'specialist': [], 'hostname': []}
          spclsts = self.pgmget(tname, "DISTINCT specialist", condition, self.PGOPT['extlog'])
          if spclsts:
             for specialist in spclsts['specialist']:

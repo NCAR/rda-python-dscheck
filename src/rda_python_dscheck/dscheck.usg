@@ -170,11 +170,11 @@ categories:
   is present. Combination of specialist login name, command name and hostname of
   computer must be unique for for each daemon control record.
 
-  Specify host name 'SLURM' for putting the command in the SLURM batch control system. If
+  Specify host name 'PBS' for putting the command in the PBS batch control system. If
   a specified command name is not found in the daemon control, the general 'dscheck'
   configuration for command name 'ALL' is used.
   
-  For example, set daemon control information for schuster, all commands on SLURM hosts,
+  For example, set daemon control information for schuster, all commands on PBS hosts,
   for maximum 4 checks can be processed at the same time with priority 1, the smaller
   the number the higher the priority is, via input file daemon.ctl
 
@@ -182,7 +182,7 @@ categories:
 
 <<Content of input file daemon.ctl>>
 DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
-0<:>schuster<:>ALL<:>SLURM<:>4<:>1<:>
+0<:>schuster<:>ALL<:>PBS<:>4<:>1<:>
 
 
 3.1.2 Get Daemon Control
@@ -311,11 +311,11 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
 (ls -l | grep test) 1> test2.out 2>test2.err
 
   For example, to add testing command 'test2' into 'dscheck' for delayed mode execution on
-  SLURM
+  PBS
 
-  dsheck AC -CM test2 -HN SLURM
+  dsheck AC -CM test2 -HN PBS
 
-  The command 'test2' must be executable at the current working directory on SLURM machines.
+  The command 'test2' must be executable at the current working directory on PBS machines.
 
 
 3.2.2 Get Check
@@ -591,7 +591,7 @@ Information options are used to pass information, one or multiple values, into
 
   -LH or -LocalHost, specify a local hostname to processes checks on the host for
   action -PC(-ProcessCheck). It defaults to '' to use the local host name. Specify
-  SLURM or PBS to process batch jobs.
+  PBS to process batch jobs.
 
   -MT or -MaxrunTime, specify the maxmum run time for deamon mode. It defaults to 0
    for unlimit time. For examples, 5000 means seconds, and 1D means 1 day for 86400
