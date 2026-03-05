@@ -169,8 +169,8 @@ class PgCheck(PgOPT, PgCMD):
       self.PGOPT['totallimit'] = 380     # maximum number of checks can be started on PBS
       self.PBSQUEUES = {'rda': None, 'htc': 'casper@casper-pbs'}
       self.PBSTIMES = {'default': 21600, 'rda': self.PGLOG['PBSTIME'], 'htc': 86400}
-      #self.DOPTHOSTS = {'rda-work': None, 'PBS': ['!subconv -Q']}
-      self.DOPTHOSTS = {'rda-work': None, 'PBS': None, 'cron': None}
+#      self.DOPTHOSTS = {'rda-work': None, 'PBS': ['!subconv -Q']}
+#      self.DOPTHOSTS = {'rda-work': None, 'PBS': None, 'cron': None}
       self.DSLMTS = {}
       self.EMLMTS = {}
 
@@ -817,14 +817,14 @@ class PgCheck(PgOPT, PgCMD):
 
    # call given command to evaluate dynamically the dscheck.qoptions
    def set_dscheck_options(self, chost, cnd, logact):
-      if chost not in self.DOPTHOSTS: return
+#      if chost not in self.DOPTHOSTS: return
       qcnt = 0
-      skipcmds = self.DOPTHOSTS[chost]
+#      skipcmds = self.DOPTHOSTS[chost]
       pgrecs = self.pgmget("dscheck", "*", cnd + "pid = 0 AND status = 'C' AND LEFT(qoptions, 1) = '!'", logact)
       cnt = len(pgrecs['cindex']) if pgrecs else 0
       for i in range(cnt):
          pgrec = self.onerecord(pgrecs, i)
-         if skipcmds and pgrec['qoptions'] in skipcmds: continue   # skip
+#         if skipcmds and pgrec['qoptions'] in skipcmds: continue   # skip
          if self.lock_dscheck(pgrec['cindex'], 1) <= 0: continue
          qoptions = self.build_dscheck_options(pgrec, 'qoptions', 'PBS')
          if not qoptions and pgrec['status'] == 'E': continue  # failed evaluating qoptions
