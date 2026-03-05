@@ -814,7 +814,7 @@ class PgCheck(PgOPT, PgCMD):
       return False
 
    # call given command to evaluate dynamically the dscheck.qoptions
-   def set_dscheck_options(self, chost, cnd, logact):
+   def set_dscheck_options(self, cnd, logact):
       qcnt = 0
       pgrecs = self.pgmget("dscheck", "*", cnd + "pid = 0 AND status = 'C' AND LEFT(qoptions, 1) = '!'", logact)
       cnt = len(pgrecs['cindex']) if pgrecs else 0
