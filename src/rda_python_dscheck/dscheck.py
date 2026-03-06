@@ -435,7 +435,7 @@ class DsCheck(PgCheck):
           cnd += "specialist = '{}' AND ".format(self.params['LN'])
       acnd = self.get_hash_condition("dscheck", None, "ST", 1)
       if acnd: acnd += " AND "
-      self.set_dscheck_options(self.get_host(1), cnd + acnd, logact)
+      self.set_dscheck_options(cnd + acnd, logact)
       if self.PGLOG['ERRCNT']: self.send_error_email()
 
    # rdadata daemon handles the daemon controls
