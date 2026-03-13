@@ -769,8 +769,8 @@ class PgCheck(PgOPT, PgCMD):
                "einfo IS NULL ORDER BY priority, rindex")
       pgrecs = self.pgmget("dsrqst", "*",  rcnd, logact)
       cnt = (len(pgrecs['rindex']) if pgrecs else 0)
-      ccnt = self.pgget("dscheck", '', "status = 'C'", logact)
-      pcnt = self.pgget("dscheck", '', "status = 'P'", logact)
+      ccnt = self.pgget("dscheck", '', "command = 'dsrqst' AND status = 'C'", logact)
+      pcnt = self.pgget("dscheck", '', "command = 'dsrqst' AND status = 'P'", logact)
       if (ccnt+pcnt) > self.PGOPT['waitlimit']:
          if cnt: self.pglog("{}/{} Checks are Waiting/Pending; Add new dscheck records {} later".format(ccnt, pcnt, self.PGLOG['HOSTNAME']),
                              self.LOGWRN|self.FRCLOG)
