@@ -165,8 +165,8 @@ class PgCheck(PgOPT, PgCMD):
       self.PGOPT['dscheck']   = "COVTUPFJDNW"            # default
       self.PGOPT['chkall']    = "COVTAUPRBFJKLZDYHNWMIQXE"   # default to all   
       self.PGOPT['dsdaemon']  = "ICHQSPO"                 # default to all
-      self.PGOPT['waitlimit'] = 280      # limit of C and P request checks at a time
-      self.PGOPT['totallimit'] = 380     # maximum number of checks can be started on PBS
+      self.PGOPT['waitlimit'] = 300      # limit of C and P request checks at a time
+      self.PGOPT['totallimit'] = 500     # maximum number of checks can be started on PBS
       self.PBSQUEUES = {'rda': None, 'htc': 'casper@casper-pbs'}
       self.PBSTIMES = {'default': 21600, 'rda': self.PGLOG['PBSTIME'], 'htc': 86400}
       self.DSLMTS = {}
@@ -769,8 +769,8 @@ class PgCheck(PgOPT, PgCMD):
                "einfo IS NULL ORDER BY priority, rindex")
       pgrecs = self.pgmget("dsrqst", "*",  rcnd, logact)
       cnt = (len(pgrecs['rindex']) if pgrecs else 0)
-      ccnt = self.pgget("dscheck", '', "status = 'C'", logact)
-      pcnt = self.pgget("dscheck", '', "status = 'P'", logact)
+      ccnt = self.pgget("dscheck", '', "command = 'dsrqst' AND status = 'C'", logact)
+      pcnt = self.pgget("dscheck", '', "command = 'dsrqst' AND status = 'P'", logact)
       if (ccnt+pcnt) > self.PGOPT['waitlimit']:
          if cnt: self.pglog("{}/{} Checks are Waiting/Pending; Add new dscheck records {} later".format(ccnt, pcnt, self.PGLOG['HOSTNAME']),
                              self.LOGWRN|self.FRCLOG)
