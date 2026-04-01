@@ -48,7 +48,7 @@ class PgCheck(PgOPT, PgCMD):
          'FI': [0, 'ForceInterrrupt', 0],
          'FO': [0, 'FormatOutput',  0],
          'LO': [0, 'LogOn',         0],
-         'MD': [0, 'PgDataset',     3],
+         'MD': [0, 'MyDataset',     3],
          'NC': [0, 'NoCommand',     0],
          'ND': [0, 'NewDaemon',     0],
          'NT': [0, 'NoTrim',        0],

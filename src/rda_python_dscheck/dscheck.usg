@@ -2,28 +2,28 @@
 1 INTRODUCTION
 
 Program 'dscheck' is a utility to add, remove, view and process recorded commands
-of other utility programs in Research Data Archive Management System (RDAMS). For
+of other utility programs in Research Data Archive Management System (GDEXMS). For
 delayed execution, or called batch process, of utility programs, 'dsarch', 'dsupdt'
 and 'dsrqst', the commands information and the directories where the commands are
-initiated are saved into RDADB as check records. For any other specialist-defined
+initiated are saved into GDEXDB as check records. For any other specialist-defined
 commands, they can be also put in delayed mode if the commands are added to
 'dscheck' control via Action -AC (-AddCheck).
 
 The check records are processed automatically via a centralized 'dscheck' daemon,
 although they can be processed manually on command line. During the execution of a
-recorded command, the check record is locked in RDADB to prevent multiple executions
+recorded command, the check record is locked in GDEXDB to prevent multiple executions
 of the same command. The check records that retain command information are
 automatically purged into check history when the commands are finished.
 
 When a recorded command fails due to failures of computer system, storage disk/tape,
 or the Database Management System, the check record is normally purged with status 'E'
 for error, unless check-reprocessing ability is built into the utility program, such
-as 'dsarch'. For a check-reprocessing command, the check record is retained in RDADB
+as 'dsarch'. For a check-reprocessing command, the check record is retained in GDEXDB
 Until the command is processed successfully or the number of executions reaches the
 try limits allowed. Utility programs 'dsrqst' and 'dsupdt' carry their own failure-
 recovering ability and they do not need check-reprocessing. 
 
-The purged check records are retained in RDADB. The check history can be viewed via
+The purged check records are retained in GDEXDB. The check history can be viewed via
 utility program 'viewcheckusage'.
 
 Program 'dscheck' supports the following major functions:
@@ -33,7 +33,7 @@ Program 'dscheck' supports the following major functions:
     a check. Without the daemon control information, a recorded command will not be
     started automatically.
   - ADD a check record for delayed command execution of any specialist-defined commands
-  - View utility command information currently saved in RDADB
+  - View utility command information currently saved in GDEXDB
   - Email the current status of a specified utility command or a list of commands,
     and include error messages if any, to a specialist
   - Delete recorded command information, because the command is not needed anymore
@@ -42,11 +42,11 @@ Program 'dscheck' supports the following major functions:
   - Interrupt a utility command that is under execution and kill recursively all
     the associated child processes
   - Add the due 'dsrqst' and 'dsupdt' actions into dscheck records
-  - Process commands that have been recorded into RDADB or the ones have failed
+  - Process commands that have been recorded into GDEXDB or the ones have failed
     previously.
 
 The specialist who executes a utility command under 'dscheck' control remains
-the exclusive owner of the check record in RDADB. This prevents the command to be
+the exclusive owner of the check record in GDEXDB. This prevents the command to be
 processed or deleted accidentally by other specialists. 
 
 In the following sections, general usages of 'dscheck' are described first; and
@@ -85,7 +85,7 @@ given on command line and all other option information are provided inside the
 input file.
 
 When information of daemons and checks are retrieved, Info options are used to
-specify conditions for querying information from RDADB. Some special signs can be
+specify conditions for querying information from GDEXDB. Some special signs can be
 used to further confine the information with special and complicated conditions;
 they are '!', '<', '>' and '<>'.  These special signs, if provided on command
 line,  must be quoted or escaped to avoid of being interpreted by Unix OS system.
@@ -118,7 +118,7 @@ simultaneously are blocked.
 Based on the information being manipulated, the actions are divided into three
 categories:
   Daemon Control Actions - create, delete, modify and view daemon control information
-                           in RDADB, of specified specialist, command and hostname
+                           in GDEXDB, of specified specialist, command and hostname
            Check Actions - add, delete, unlock and view check information of the
                            active individual checks
    Check Process Actions - process checks by starting commands on remote hosts as
@@ -148,7 +148,7 @@ categories:
 
 3.1.1 Set Daemon Control
   -SD or -SetDaemon, creates and modifies daemon control information into
-  RDADB for given specialist login names, commands, and hostnames of computers on
+  GDEXDB for given specialist login names, commands, and hostnames of computers on
   which the check commands are processed. One or multiple records can be set each
   time.
 
@@ -162,9 +162,9 @@ categories:
          [-(PO|Priority) HostListOrder]
 
   Mode option that can be specified for this action include:
-  -(ND|NewDaemon) - sets a new daemon control record into RDADB
+  -(ND|NewDaemon) - sets a new daemon control record into GDEXDB
 
-  If information of a daemon control exists already in RDADB for a given specialist,
+  If information of a daemon control exists already in GDEXDB for a given specialist,
   a command and a hostname, the daemon control record is modified; otherwise, a new
   daemon control record is added if daemon index is 0 and Mode option -ND (-NewDaemon)
   is present. Combination of specialist login name, command name and hostname of
@@ -176,7 +176,7 @@ categories:
   
   For example, set daemon control information for schuster, all commands on PBS hosts,
   for maximum 4 checks can be processed at the same time with priority 1, the smaller
-  the number the higher the priority is, via input file daemon.ctl
+  the number the higher the priority is, via input file daemon.ctl:
 
   dsrqst SD -ND -IF daemon.ctl
 
@@ -217,7 +217,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   I      -(DI|DaemonIndex)      daemon control index
   C      -(CM|Command)          command names of utility programs
   H      -(HN|Hostname)         computer hostname
-  M      -(MH|MatchHost)        Flage to control hostname match
+  M      -(MH|MatchHost)        Flags to control hostname match
   S      -(SN|Specialist)       DECS specialist the daemon set for
   P      -(PL|ProcessLimit)     Max check count to be processed at the same times
   O      -(PO|Priority)         host priority a specified command to start on
@@ -232,14 +232,14 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   option -SN (-Specialist). To view all control records, you simply provide option
   -SN with value of 'ALL'.
   
-  For example, to get all daemon control information currently set for you
+  For example, to get all daemon control information currently set for you:
   
   dscheck GD
 
 
 3.1.3 Delete Daemon Control
   -DL or -Delete (Alias: -RM, -Remove), deletes one or multiple daemon control records
-  from RDADB for given daemon control indices. 
+  from GDEXDB for given daemon control indices. 
  
   dscheck -(DL|Delete)
           -(DI|DaemonIndex) DaemonControlIndices
@@ -289,7 +289,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   as the owner of the added check record, and the current path is defaulted as the
   working directory when the command is executed later.
 
-  Specified addtional PBS batch options via Info option -QS (-QSubOptions) to add a check;
+  Specified additional PBS batch options via Info option -QS (-QSubOptions) to add a check;
   and specify a parent check index to put the current command on hold until the parent
   check is finished.
 
@@ -297,29 +297,33 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   A simple shell script can be used to wrap a complicated command. 
   
   For example, to list file names in the current directory with name containing 'test'
-  by catching the standard output into a log and display it on screen
+  by catching the standard output into a log and display it on screen:
+  
+  dsheck AC -CM test1.sh -HN PBS
 
 <<Content of shell script test1.sh>>
 #!/bin/sh
 (ls -l | grep test) | tee test1.out
 
   For example, to list file names in the current directory with name containing 'test'
-  by catching the standard output and error into separate log files
- 
+  by catching the standard output and error into separate log files:
+
+  dsheck AC -CM test2.sh -HN PBS
+
 <<Content of shell script test2.sh>>
 #!/bin/sh
 (ls -l | grep test) 1> test2.out 2>test2.err
 
   For example, to add testing command 'test2' into 'dscheck' for delayed mode execution on
-  PBS
+  PBS:
 
-  dsheck AC -CM test2 -HN PBS
+  dsheck AC -CM test3 -HN PBS
 
-  The command 'test2' must be executable at the current working directory on PBS machines.
+  The command 'test3' must be executable at the current working directory on PBS machines.
 
 
 3.2.2 Get Check
-  -GC or -GetCheck, gets check information recorded in RDADB.
+  -GC or -GetCheck, gets check information recorded in GDEXDB.
 
   dscheck -(GC|GetCheck) [Mode Options]
          [-(FN|FieldNames) FieldNameString]
@@ -354,14 +358,14 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
    T     -(DS|Dataset)         dataset ID, the original command run against
    A     -(AN|ActionName)      action name for a given command
    U     -(ST|Status)          check status for a recorded command
-   B     -(DF|DownFlags)       Storage system down flags: H-HPSS,D-DRDATA,G-GLADE,O-ObjectStore
-   P     -(PQ|PBSQueue)        PBS batch queue name: rda or htc
+   B     -(DF|DownFlags)       Storage system down flags: D-DRDATA,G-GLADE,O-ObjectStore
+   P     -(PQ|PBSQueue)        PBS batch queue name: gdex or htc
    R     -(PI|ParentIndex)     parent check index the current one to wait on
    F     -(FC|FileCount)       number of files need to be processed
    J     -(DC|DoneCount)       number of files are processed already
    K     -(TC|TryCount)        number of tries the command is executed
    L     -(MC|MaxCount)        upper limit for number of command tries
-   Z     -(SZ|DataSize)        total tytes of data processed for the command
+   Z     -(SZ|DataSize)        total bytes of data processed for the command
    D     -(CD|CheckDate)       date the command is initially recorded
    Y     -(CT|CheckTime)       time the command is initially recorded
    H     -(HN|HostName)        host names the command can or cannot run on
@@ -379,7 +383,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
 
 
 3.2.3 Delete Check
-  -DL or -Delete, deletes one or multiple 'dscheck' records from RDADB 
+  -DL or -Delete, deletes one or multiple 'dscheck' records from GDEXDB 
   for given check indices.
  
   dscheck -(DL|Delete)
@@ -407,7 +411,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
 
 
 3.3 Check Process Actions
-  Delayed mode command executions recorded in RDADB are automatically started,
+  Delayed mode command executions recorded in GDEXDB are automatically started,
   or restarted, by the common 'dscheck' daemon. Running commands can be interrupted
   at any time and the child processed of the interrupted commands are also cleaned up.
   The status of the current check records can be gathered and emailed to a specialist.
@@ -633,7 +637,7 @@ Information options are used to pass information, one or multiple values, into
  
   -CD or -CheckDate, the check date of the recorded command is first processed.
   
-  -CI or -CechkIndex, check record indices for commands recorded in RDADB. A check
+  -CI or -CechkIndex, check record indices for commands recorded in GDEXDB. A check
   record is automatically purged if the command is finished.
 
   -CM or -Command (Alias: -CommandName), the command name recorded in check record.
@@ -653,7 +657,7 @@ Information options are used to pass information, one or multiple values, into
   -DC or -DoneCount, the number of files that are processed successfully already.
 
   -DF or -DownFlags, storage system down flags. The current supported flags are:
-  H-HPSS, D-DRDATA, G-GLADE, O-ObjectStore. It can hold multiple flags, up to 5,
+  D-DRDATA, G-GLADE, O-ObjectStore. It can hold multiple flags, up to 5,
   for all down storage systems.
 
   -DI or -DaemonIndex, daemon control indices. A daemon control record retains
@@ -666,7 +670,7 @@ Information options are used to pass information, one or multiple values, into
  
   -EV or -Environments, (Alias: -Envs), specifies environment variables, in form of 
   VarName=VarValue and separated by ',', needed to be set to execute a command as
-  a batch job. The environment varaibles will be set in the batch starting script.
+  a batch job. The environment variables will be set in the batch starting script.
 
   -FC or -FileCount, the number of files to be processed by a check command.
   
