@@ -19,7 +19,7 @@ When a recorded command fails due to failures of computer system, storage disk/t
 or the Database Management System, the check record is normally purged with status 'E'
 for error, unless check-reprocessing ability is built into the utility program, such
 as 'dsarch'. For a check-reprocessing command, the check record is retained in GDEXDB
-Until the command is processed successfully or the number of executions reaches the
+until the command is processed successfully or the number of executions reaches the
 try limits allowed. Utility programs 'dsrqst' and 'dsupdt' carry their own failure-
 recovering ability and they do not need check-reprocessing. 
 
@@ -38,16 +38,16 @@ Program 'dscheck' supports the following major functions:
     and include error messages if any, to a specialist
   - Delete recorded command information, because the command is not needed anymore
   - Unlock a given recorded command in case lock information was not cleaned
-    properly when the command was failed
+    properly when the command has failed
   - Interrupt a utility command that is under execution and kill recursively all
     the associated child processes
   - Add the due 'dsrqst' and 'dsupdt' actions into dscheck records
-  - Process commands that have been recorded into GDEXDB or the ones have failed
-    previously.
+  - Process commands that have been recorded into GDEXDB or the ones that have
+    failed previously.
 
 The specialist who executes a utility command under 'dscheck' control remains
-the exclusive owner of the check record in GDEXDB. This prevents the command to be
-processed or deleted accidentally by other specialists. 
+the exclusive owner of the check record in GDEXDB. This prevents the command from being
+processed or deleted accidentally by other specialists.
 
 In the following sections, general usages of 'dscheck' are described first; and
 detail descriptions of Action options are given; and finally Mode and Info
@@ -62,7 +62,7 @@ options are explained.
 Quotes [] indicate optional. A pipeline '|' in parentheses as in format (A|B)
 means either A or B can be used. The options applied to 'dscheck' are divided
 into three categories, Action, Mode, and Information (Info for short) options. 
-Action options are used to specify what tasks this utility program to execute,
+Action options are used to specify what task this utility program is to execute,
 Mode options are used to modify behaviors of the actions, and the Info options 
 are used to pass information, one or multiple values, to run 'dscheck'. An option
 can be given in form of either short name or long name, -DS or -Dataset for
@@ -77,8 +77,8 @@ and certain Mode options can be applied to alter the behaviors of the Action.
 
 All options, except Info option -IF (-InputFile), can be given either on command
 line or in input files. Input file names are presented per Info option -IF and
-can only be provided on command line. Referring to description of Info option -IF
-(-InputFile) for detail on how to present options in input files.  One or multiple
+can only be provided on command line. Refer to the description of Info option -IF
+(-InputFile) for details on how to present options in input files.  One or multiple
 input files, combined with options on command line, are allowed to run 'dscheck'.
 The option name, -IF (-InputFile), itself can be omitted if a single input file is
 given on command line and all other option information are provided inside the
@@ -88,7 +88,7 @@ When information of daemons and checks are retrieved, Info options are used to
 specify conditions for querying information from GDEXDB. Some special signs can be
 used to further confine the information with special and complicated conditions;
 they are '!', '<', '>' and '<>'.  These special signs, if provided on command
-line,  must be quoted or escaped to avoid of being interpreted by Unix OS system.
+line,  must be quoted or escaped to avoid being interpreted by the Unix shell.
 The '!', or \!, means exclusion to the following value(s) and it must be the
 first item following an Info option name, while '<' or '>' mean greater or less
 than the following value and '<>' means between the following two values.
@@ -102,7 +102,7 @@ command line as
 
 A description is displayed for an option given either before or after -(h|help).
 If no option is specified or 'dscheck' is issued by itself, this whole document
-is displayed per UNIX utility 'more'. A hard copy of this help document can be
+is displayed via UNIX utility 'more'. A hard copy of this help document can be
 printed from the saved file, dscheck.usg, under python package rda_python_dscheck.
 
 #The online HTML version of this document is available at
@@ -133,11 +133,11 @@ categories:
 
   A daemon control record for a command, a specialist and a hostname is used to
   configure how many concurrent processes the specified command can be executed
-  for the specialist on specified hostname, and the priority the the hostname is
+  for the specialist on specified hostname, and the priority the hostname is
   picked to start the command. A running centralized daemon reads this record
   periodically in case the configuration is changed while the daemon is still
   running, so that specialists can reset the values in daemon control records to
-  change the behave of dscheck daemon dynamically without shutting the daemon down.
+  change the behavior of dscheck daemon dynamically without shutting the daemon down.
 
   Daemon control information can be created, modified and viewed via Actions
   included in this section:
@@ -168,7 +168,7 @@ categories:
   a command and a hostname, the daemon control record is modified; otherwise, a new
   daemon control record is added if daemon index is 0 and Mode option -ND (-NewDaemon)
   is present. Combination of specialist login name, command name and hostname of
-  computer must be unique for for each daemon control record.
+  computer must be unique for each daemon control record.
 
   Specify host name 'PBS' for putting the command in the PBS batch control system. If
   a specified command name is not found in the daemon control, the general 'dscheck'
@@ -178,10 +178,10 @@ categories:
   for maximum 4 checks can be processed at the same time with priority 1, the smaller
   the number the higher the priority is, via input file daemon.ctl:
 
-  dsrqst SD -ND -IF daemon.ctl
+  dscheck -SD -ND -IF daemon.ctl
 
 <<Content of input file daemon.ctl>>
-DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
+DaemonIndex<:>Specialist<:>Command<:>Hostname<:>ProcessLimit<:>Priority<:>
 0<:>schuster<:>ALL<:>PBS<:>4<:>1<:>
 
 
@@ -289,7 +289,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   as the owner of the added check record, and the current path is defaulted as the
   working directory when the command is executed later.
 
-  Specified additional PBS batch options via Info option -QS (-QSubOptions) to add a check;
+  Specify additional PBS batch options via Info option -QS (-QsubOptions) to add a check;
   and specify a parent check index to put the current command on hold until the parent
   check is finished.
 
@@ -299,7 +299,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   For example, to list file names in the current directory with name containing 'test'
   by catching the standard output into a log and display it on screen:
   
-  dsheck AC -CM test1.sh -HN PBS
+  dscheck -AC -CM test1.sh -HN PBS
 
 <<Content of shell script test1.sh>>
 #!/bin/sh
@@ -308,7 +308,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   For example, to list file names in the current directory with name containing 'test'
   by catching the standard output and error into separate log files:
 
-  dsheck AC -CM test2.sh -HN PBS
+  dscheck -AC -CM test2.sh -HN PBS
 
 <<Content of shell script test2.sh>>
 #!/bin/sh
@@ -317,7 +317,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   For example, to add testing command 'test2' into 'dscheck' for delayed mode execution on
   PBS:
 
-  dsheck AC -CM test3 -HN PBS
+  dscheck -AC -CM test3 -HN PBS
 
   The command 'test3' must be executable at the current working directory on PBS machines.
 
@@ -347,7 +347,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
                        of a given field
 
   Use Info option -FN (-FieldNames) to specify what check fields to retrieve.
-  It defaults to "COVTUFJDNW" if -FN is not given.
+  It defaults to "COVTUPFJDNW" if -FN is not given.
 
   Valid check field names and their corresponding Info options:
 
@@ -395,17 +395,17 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
 
 
 3.2.4 Unlock Check
-  -UL or -UnLockCheck, (Alias: -UnLock), unlocks check records that their
-  commands aborted abnormally during processes.
+  -UL or -UnLockCheck, (Alias: -UnLock), unlocks check records whose
+  commands aborted abnormally during processing.
   
   Process ID and computer hostname are saved in a check record when the recorded
   command is running. If the process aborts abnormally, the PID and hostname may
   sometimes be not cleaned properly. Use this action to clean up the locking
   information to allow the command to be reprocessed or purged.
 
-  dscheck -(-UL|UnLockCheck)
-           -(CI|CheckIndex) CheckIndices
-          [-(DB|Debug) DebugModeInfo]
+  dscheck -(UL|UnLockCheck)
+          -(CI|CheckIndex) CheckIndices
+         [-(DB|Debug) DebugModeInfo]
 
   It is mandatory to provide a check index to remove lock on a recorded command.
 
@@ -458,13 +458,13 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   according to the configured information in daemon controls.
   
 3.3.2 Interrupt Check
-  -IC or -InterruptCheck, interrupts checks that their commands are currently running
-  and also kills recursively all the child processes that are running under the
+  -IC or -InterruptCheck, interrupts checks whose commands are currently running
+  and also kills recursively all the child processes running under those
   commands. Locks are cleaned too when the checks are interrupted.
 
-  dscheck -(-IC|InterruptCheck) [Mode Option]
-           -(CI|CheckIndex) CheckIndices
-          [-(DB|Debug) DebugModeInfo]
+  dscheck -(IC|InterruptCheck) [Mode Option]
+          -(CI|CheckIndex) CheckIndices
+         [-(DB|Debug) DebugModeInfo]
 
   Mode option that can be specified for this action:
   -(FI|ForceInterrupt) - it must be present for this action to interrupt a check
@@ -524,11 +524,11 @@ are all optional. No value is allowed to be passed in following any Mode option.
   -AW or -AnyWhere, for Action -AC (-AddCheck), sets Working directory empty in
   check record to start processing the check anywhere.
 
-  -BG or -BackGround (Alias: -b), background process. When it presents
-  screen display is turned off for both standard outputs and errors. -(CP|CheckPending) - Check and kill long pending checks
-  
-  -CP or -CheckPending, if present for Action -PC (-ProcessCheck), check and kill
-  long pending checks
+  -BG or -BackGround (Alias: -b), background process. When it is present,
+  screen display is turned off for both standard output and errors.
+
+  -CP or -CheckPending, if present for Action -PC (-ProcessCheck), checks and kills
+  long pending checks.
 
   -CS or -CheckStatus, if present, displays detailed status information of the
   recorded commands, including progress percentage for a running command and
@@ -562,7 +562,7 @@ are all optional. No value is allowed to be passed in following any Mode option.
   -WR or -WithdsRqst, adds requests due to be built or purged of command 'dsrqst'
   for 'dscheck' Action -PC (-ProcessCheck) in non-daemon mode.
   
-  -WU or -WithdsUpdt, adds due update controls of command 'dsrqst' for 'dscheck' 
+  -WU or -WithdsUpdt, adds due update controls of command 'dsupdt' for 'dscheck'
   Action -PC (-ProcessCheck) in non-daemon mode.
 
 5 INFORMATION OPTIONS
@@ -637,7 +637,7 @@ Information options are used to pass information, one or multiple values, into
  
   -CD or -CheckDate, the check date of the recorded command is first processed.
   
-  -CI or -CechkIndex, check record indices for commands recorded in GDEXDB. A check
+  -CI or -CheckIndex, check record indices for commands recorded in GDEXDB. A check
   record is automatically purged if the command is finished.
 
   -CM or -Command (Alias: -CommandName), the command name recorded in check record.
@@ -650,8 +650,8 @@ Information options are used to pass information, one or multiple values, into
   single integer value, for example, 1000 means to log debug messages for debug
   levels 1 to 1000; or a range of values, for example, 200-1000 means to log
   debug messages from debug levels 200 to 1000. The default debug file path is
-  '$DSSHOME}/dssdb/log' and the default debug file name is 'mydss.dbg'. Provides
-  the second and third values for this option to override the default ones
+  '${DSSHOME}/dssdb/log' and the default debug file name is 'mydss.dbg'. Provide
+  the second and third values for this option to override the defaults
   respectively.
 
   -DC or -DoneCount, the number of files that are processed successfully already.
@@ -689,7 +689,7 @@ Information options are used to pass information, one or multiple values, into
   option -AO (-ActOption, default to <!>); and different equal sign of single
   value assignment can be provided by Info option -ES, (-EqualSign, default to
   '<=>'). Multi-value assignments can be given in columns delimited with
-  separator specified per option -SP (-Separator, default to '<:>'). It starts
+  separator specified per option -DV (-Divider, default to '<:>'). It starts
   with a column title line for multi-value option names and the rest holds
   values corresponding to each column titles. The value information stops at
   the end of the file or when a new column name line or another single value
@@ -697,8 +697,8 @@ Information options are used to pass information, one or multiple values, into
   additional separator must be appended for each line, including the column
   title line to end lines properly.
 
-  -MC or -MaxCount, the maximum number of tries for a check command can be processed
-  if the command is failed.
+  -MC or -MaxCount, the maximum number of tries a check command can be processed
+  if the command has failed.
 
   -MH or -MatchHost (Alias: -MatchHostname), flag to control hostname match.
   'G' - general match, including empty hostname specified, or exclusive hostnames
@@ -732,7 +732,7 @@ Information options are used to pass information, one or multiple values, into
   -ST or -Status, check command status for a check record. Include command
   progress percentage if under process and error message for a failed command.
   
-  -SZ or -DataSize, the total bytes of data is processed for the check record.
+  -SZ or -DataSize, the total bytes of data processed for the check record.
 
   -TC or -TryCount, the number of tries for a check command being processed. It
   is up to the number of tries specified via info option -MC. 
