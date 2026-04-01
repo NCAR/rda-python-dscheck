@@ -103,10 +103,10 @@ command line as
 A description is displayed for an option given either before or after -(h|help).
 If no option is specified or 'dscheck' is issued by itself, this whole document
 is displayed per UNIX utility 'more'. A hard copy of this help document can be
-printed from the saved file: ${DSSHOME}/dssdb/prog_usage/dscheck.usg.
+printed from the saved file, dscheck.usg, under python package rda_python_dscheck.
 
 #The online HTML version of this document is available at
-#http://dss.ucar.edu/internal/docs/dscheck/
+#https://gdex-docs-dscheck.readthedocs.io
 
 
 3 ACTION OPTIONS
@@ -117,16 +117,16 @@ simultaneously are blocked.
 
 Based on the information being manipulated, the actions are divided into three
 categories:
-  Daemon Control Actions - create, delete, modify and view daemon control information
-                           in GDEXDB, of specified specialist, command and hostname
-           Check Actions - add, delete, unlock and view check information of the
-                           active individual checks
-   Check Process Actions - process checks by starting commands on remote hosts as
-                           configured in daemon controls and purge checks by recording
-                           the commands and their execution information into check
-                           history; interrupt the current executing commands by killing
-                           the current process and its all children; and email status
-                           of current checks
+   Daemon Control Actions - create, delete, modify and view daemon control information
+                            in GDEXDB, of specified specialist, command and hostname
+            Check Actions - add, delete, unlock and view check information of the
+                            active individual checks
+    Check Process Actions - process checks by starting commands on remote hosts as
+                            configured in daemon controls and purge checks by recording
+                            the commands and their execution information into check
+                            history; interrupt the current executing commands by killing
+                            the current process and its all children; and email status
+                            of current checks
  Daemon Host Connectivity - check connectivity of daemon hosts for specialists
 
 3.1 Daemon Control Actions
@@ -221,7 +221,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
   S      -(SN|Specialist)       DECS specialist the daemon set for
   P      -(PL|ProcessLimit)     Max check count to be processed at the same times
   O      -(PO|Priority)         host priority a specified command to start on
-  
+
   Daemon control information can be retrieved for specified specialist per option
   -SN (-Specialist), and/or other conditions. Info option -SN, -CM and -HN accept
   wildcard input of '%' for matching any number of characters. 
@@ -372,7 +372,7 @@ DaemonIndex<:>Command<:>Specialist<:>Hostname<:>ProcessLimit<:>Priority<:>
    N     -(SN|Specialist)      specialist login name who starts the command
    W     -(WD|WorkDir)         working directory where the command is started
    M     -(MO|Modules)         include modules to load to batch job script
-   I     -(EV|Environments)    include environment vairables to load to batch job script
+   I     -(EV|Environments)    include environment variables to load to batch job script
    Q     -(QS|QsubOptions)     additional PBS batch options for qsub
    X     -(AX|ArgumentExtra)   additional argument line beyond 100 characters
    E     -(ER|ErrorMessage)    error message from failed command
@@ -522,7 +522,7 @@ Use proper Mode options to modify behaviors of Action options. Mode options
 are all optional. No value is allowed to be passed in following any Mode option.
 
   -AW or -AnyWhere, for Action -AC (-AddCheck), sets Working directory empty in
-  cehck record to start processing the check anywhere.
+  check record to start processing the check anywhere.
 
   -BG or -BackGround (Alias: -b), background process. When it presents
   screen display is turned off for both standard outputs and errors. -(CP|CheckPending) - Check and kill long pending checks
@@ -549,7 +549,7 @@ are all optional. No value is allowed to be passed in following any Mode option.
   a given dataset listed for another specialist.
 
   -NC or -NoCommand (Alias: -NoRemoteCommand), does not issue remote commands if
-  this Mode option is present for action -PC (-Processcheck).
+  this Mode option is present for action -PC (-ProcessCheck).
 
   -ND or -NewDaemon, a new daemon control can only be added when this Mode option is
   present and daemon control index is given as 0 when Action -SD (-SetDaemon) of
@@ -597,7 +597,7 @@ Information options are used to pass information, one or multiple values, into
   action -PC(-ProcessCheck). It defaults to '' to use the local host name. Specify
   PBS to process batch jobs.
 
-  -MT or -MaxrunTime, specify the maxmum run time for deamon mode. It defaults to 0
+  -MT or -MaxrunTime, specify the maximum run time for daemon mode. It defaults to 0
    for unlimit time. For examples, 5000 means seconds, and 1D means 1 day for 86400
    seconds.
 
@@ -701,7 +701,7 @@ Information options are used to pass information, one or multiple values, into
   if the command is failed.
 
   -MH or -MatchHost (Alias: -MatchHostname), flag to control hostname match.
-  'G' - general match, including emty hostname specified, or exclusive hostnames
+  'G' - general match, including empty hostname specified, or exclusive hostnames
   given but the hostname is not in the list, and 'M' - match only the hostname
   specified is identical to the current host.
 
@@ -722,7 +722,7 @@ Information options are used to pass information, one or multiple values, into
   -PQ or -PBSQueue, specifies PBS batch queue index the current check to submit to.
 
   -QS or -QsubOptions, (Alias: -PBSOptions), specifies options to execute a command
-  as a batch job via qsub on PBS nodes. The qsub options must be quoted when prsented
+  as a batch job via qsub on PBS nodes. The qsub options must be quoted when presented
   on command line, such as, -QS '-l walltime=12:00:00'.
   
   -SN or -Specialist, the specialist who runs the original command. This Info
