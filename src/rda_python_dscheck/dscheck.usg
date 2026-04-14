@@ -30,7 +30,7 @@ the utility program 'viewcheckusage'.
     concurrent processes of a specified command can run on a given host, and
     the host priorities that determine which host is selected for processing
     a check. Without daemon control information, recorded commands will not
-    start automatically.
+    start automatically
   - Add a check record for delayed execution of any specialist-defined command
   - View utility command information currently saved in GDEXDB
   - Email the current status of a specified command or list of commands,
@@ -53,7 +53,7 @@ options in detail, followed by Mode and Info options.
 2 GENERAL DSCHECK USAGE
 
   dscheck [Action Option] [Mode Options] [Info Options]
-      or
+       or
   dscheck [-(IF|InputFile)] InputFileNames
 
 Brackets [] indicate optional elements. A pipe '|' within parentheses, as in
