@@ -95,26 +95,25 @@ are accepted, and aliases are noted with each option.
 2.1 Quick Start
 
   Show the full document, paged through 'more':
-    dscheck
+  dscheck
 
   Show the description of a single option:
-    dscheck -h -AC
-    dscheck -AC -h
+  dscheck -h -AC
 
   List your own daemon control records:
-    dscheck -GD
+  dscheck -GD
 
   List your own active check records:
-    dscheck -GC
+  dscheck -GC
 
   Add a deferred run of a script on PBS:
-    dscheck -AC -CM myscript.sh -HN PBS
+  dscheck -AC -CM myscript.sh -HN PBS
 
   Email yourself the status of all your active checks:
-    dscheck -EC
+  dscheck -EC
 
   Start the dscheck daemon (typical for the operator):
-    dscheck -PC -DM start
+  dscheck -PC -DM start
 
 2.2 Filters and Special Characters in Queries
 
@@ -135,20 +134,9 @@ Every option except -IF (-InputFile) may be supplied either on the command
 line or in an input file. -IF is itself only valid on the command line.
 A single dscheck invocation may combine command-line options with one or
 more input files. If the only options are inside a single input file, the
--IF prefix may be omitted:
-
-  dscheck mycheck.in
-
-See the description of -IF in Section 5.2 for the input-file format
-(comments, action/mode markers, single-value assignments, and tabular
-multi-value assignments, including delimiter overrides).
-
-2.4 Getting Help
-
-  dscheck                         # full document, displayed via 'more'
-  dscheck -(h|help)               # full document
-  dscheck [Option] -(h|help)      # description of [Option]
-  dscheck -(h|help) [Option]      # same as above
+-IF prefix may be omitted. See the description of -IF in Section 5.2 for
+the input-file format (comments, action/mode markers, single-value assignments,
+and tabular multi-value assignments, including delimiter overrides).
 
 A printable copy of this document is the file dscheck.usg installed under
 the python package rda_python_dscheck.
