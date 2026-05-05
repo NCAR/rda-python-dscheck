@@ -80,7 +80,7 @@ into an action.
 Notation:
   []       - the enclosed element is optional.
   (A|B)    - either A or B may be used (a short form and a long form).
-  -OPT     - an option name. Names are case-insensitive; values are not.
+  -<OPT>   - OPT is an option name. Names are case-insensitive; values are not.
 
 Every dscheck invocation has at most one Action option, which selects the
 task to perform. Mode options change how the chosen action behaves. Info
@@ -223,16 +223,6 @@ Delete Daemon Control - remove daemon control records by index.
     HN = PBS    - submit the command to the PBS batch system.
     CM = ALL    - apply to any command not otherwise configured for this
                   specialist.
-
-  Example - configure schuster on PBS for any command, with up to 4
-  concurrent checks at priority 1 (lower number = higher priority), driven
-  from input file daemon.ctl:
-
-    dscheck -SD -ND -IF daemon.ctl
-
-  <<Content of input file daemon.ctl>>
-  DaemonIndex<:>Specialist<:>Command<:>Hostname<:>ProcessLimit<:>Priority<:>
-  0<:>schuster<:>ALL<:>PBS<:>4<:>1<:>
 
 
 3.1.2 Get Daemon Control
