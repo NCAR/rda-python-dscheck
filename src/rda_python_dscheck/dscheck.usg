@@ -354,7 +354,7 @@ Unlock Check - clear leftover lock information after an abnormal exit.
 
   Add the executable 'test3' for deferred execution on PBS:
 
-    dscheck -AC -CM test3 -HN PBS
+  dscheck -AC -CM test3 -HN PBS
 
   The command 'test3' must be executable from the working directory on
   the PBS machine.
