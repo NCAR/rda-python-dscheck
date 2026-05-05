@@ -80,7 +80,7 @@ into an action.
 Notation:
   []       - the enclosed element is optional.
   (A|B)    - either A or B may be used (a short form and a long form).
-  -OPT     - an option name. Names are case-insensitive; values are not.
+  -<OPT>   - OPT is an option name. Names are case-insensitive; values are not.
 
 Every dscheck invocation has at most one Action option, which selects the
 task to perform. Mode options change how the chosen action behaves. Info
