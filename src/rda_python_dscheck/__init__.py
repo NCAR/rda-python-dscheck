@@ -19,7 +19,7 @@ object that existing callers expect.
 
 from . import PgCheck
 
-__version__ = "2.0.7"
+__version__ = "2.0.8"
 
 __all__ = [
    "PgCheck",
