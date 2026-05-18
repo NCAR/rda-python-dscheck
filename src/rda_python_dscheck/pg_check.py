@@ -62,6 +62,7 @@ class PgCheck(PgOPT, PgCMD):
          'MT': [1, 'MaxrunTime',     0],
          'OF': [1, 'OutputFile',     0],
          'ON': [1, 'OrderNames',     0],
+         'SH': [1, 'SSHHostname',    0],
          'AO': [1, 'ActOption',      1],  # default to <!>
          'WI': [1, 'WaitInterval',   1],
          'AN': [2, 'ActionName',     0],
@@ -680,7 +681,8 @@ class PgCheck(PgOPT, PgCMD):
       if not pgrec or options != pgrec[optname]: return options
       record = {}
       errmsg = ''
-      record[optname] = options = self.get_dynamic_options(options[1:], pgcheck['oindex'], pgcheck['otype'])
+      sshhost = self.params.get('SH')
+      record[optname] = options = self.get_dynamic_options(options[1:], pgcheck['oindex'], pgcheck['otype'], sshhost)
       if not options and self.PGLOG['SYSERR']:
          record['status'] = pgcheck['status'] = 'E'
          record['pid'] = 0
