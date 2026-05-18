@@ -549,6 +549,7 @@ Available actions:
          [-(MO|Modules)  ModuleList]
          [-(EV|Environments)  EnvironmentPairList]
          [-(QS|QsubOptions)  PBSBatchOptions]
+         [-(SH|SSHHostname) RemoteHostname]
          [-(DB|Debug) DebugModeInfo]
 
 
@@ -642,6 +643,11 @@ multiple values is an error.
 
   -ON or -OrderNames, a string of single-letter field codes that
   controls the sort order of -GC (-GetCheck) output.
+
+  -SH or -SSHHostname, used with -SO (-SetOptions): remote host name on
+  which the dynamic-option command should run. When supplied, the command
+  is invoked via 'ssh <hostname> ...' instead of locally. Defaults to
+  running locally when omitted.
 
   -AO or -ActOption, the token that marks Action and Mode options in
   input files. Defaults to '<!>'.
