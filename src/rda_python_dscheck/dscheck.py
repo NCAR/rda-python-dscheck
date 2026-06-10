@@ -225,7 +225,7 @@ class DsCheck(PgCheck):
             if pgrec:
                modcnt += self.pgupdt(tname, record, cnd, self.PGOPT['extlog'])
             else:
-               if 'specialist' not in record and self.params['LN'] != self.PGLOG['GDEXUSER']: record['specialist'] = self.params['LN']
+               if 'specialist' not in record and self.params['LN'] != self.PGLOG['COMMONUSER']: record['specialist'] = self.params['LN']
                didx = self.pgadd(tname, record, self.PGOPT['extlog']|self.AUTOID)
                if didx:
                   self.pglog("Daemon Control Index {} added".format(didx), self.PGOPT['wrnlog'])
@@ -411,11 +411,11 @@ class DsCheck(PgCheck):
    # process the checks
    def process_dschecks(self):
       logact = self.LOGERR
-      if self.PGLOG['CURUID'] == self.PGLOG['GDEXUSER'] and (time.time()%(3*self.PGSIG['CTIME'])) < 60:
+      if self.PGLOG['CURUID'] == self.PGLOG['COMMONUSER'] and (time.time()%(3*self.PGSIG['CTIME'])) < 60:
          logact |= self.EMEROL
       cnd = self.get_hash_condition("dscheck", "ST", None, 1)
       if cnd: cnd += " AND "
-      if 'SN' not in self.params and self.params['LN'] != self.PGLOG['GDEXUSER']:
+      if 'SN' not in self.params and self.params['LN'] != self.PGLOG['COMMONUSER']:
           cnd += "specialist = '{}' AND ".format(self.params['LN'])
       if 'WR' in self.params: self.start_dsrqsts(cnd, logact)
       if 'WU' in self.params: self.start_dsupdts(cnd, logact)
@@ -427,11 +427,11 @@ class DsCheck(PgCheck):
    # process the checks
    def process_dscheck_options(self):
       logact = self.LOGERR
-      if self.PGLOG['CURUID'] == self.PGLOG['GDEXUSER'] and (time.time()%(3*self.PGSIG['CTIME'])) < 60:
+      if self.PGLOG['CURUID'] == self.PGLOG['COMMONUSER'] and (time.time()%(3*self.PGSIG['CTIME'])) < 60:
          logact |= self.EMEROL
       cnd = self.get_hash_condition("dscheck", "ST", None, 1)
       if cnd: cnd += " AND "
-      if 'SN' not in self.params and self.params['LN'] != self.PGLOG['GDEXUSER']:
+      if 'SN' not in self.params and self.params['LN'] != self.PGLOG['COMMONUSER']:
           cnd += "specialist = '{}' AND ".format(self.params['LN'])
       acnd = self.get_hash_condition("dscheck", None, "ST", 1)
       if acnd: acnd += " AND "
@@ -513,7 +513,7 @@ class DsCheck(PgCheck):
          hostname = pgrecs['hostname'][i]
          cmd = "ssh {} ps".format(hostname)
          if specialist != self.PGLOG['CURUID']:
-            if self.PGLOG['CURUID'] != self.PGLOG['GDEXUSER']:
+            if self.PGLOG['CURUID'] != self.PGLOG['COMMONUSER']:
                self.pglog("{}: Cannot check connection to '{}' for {}".format(self.PGLOG['CURUID'], hostname, specialist), self.LOGERR)
                continue
             else:

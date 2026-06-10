@@ -9,18 +9,30 @@ well as any specialist-defined command.
 
 The mental model has three layers:
 
-  1. A check record  - a row in GDEXDB that captures one deferred command:
-                       its name, arguments, owner, working directory, target
-                       host, retry policy, and current status.
-  2. A daemon control - a row in GDEXDB that tells the centralized 'dscheck'
-                        daemon how many concurrent processes of a given
-                        command a given specialist may run on a given host,
-                        and at what host priority.
-  3. The dscheck daemon - a long-running process that wakes on a fixed
-                          interval, adds due 'dsupdt'/'dsrqst' check records,
-                          and starts (or restarts) commands from check
-                          records on hosts chosen according to daemon
-                          control configuration.
+  A check record         - a row in GDEXDB that captures one deferred command:
+                           its name, arguments, owner, working directory,
+                           target host, retry policy, and current status.
+  daemon/crontab control - a row in GDEXDB that tells the centralized
+                           'dscheck' driver (whether running as a long-lived
+                           daemon or as a short-lived crontab invocation) how
+                           many concurrent processes of a given command a
+                           given specialist may run on a given host, and at
+                           what host priority.
+  The dscheck driver     - a process that wakes on a fixed interval, adds
+                           due 'dsupdt'/'dsrqst' check records, and starts
+                           (or restarts) commands from check records on
+                           hosts chosen according to daemon control
+                           configuration. The driver may run either as a
+                           long-running daemon ('-PC -DM start') or as a
+                           short-lived crontab invocation ('-PC' every
+                           minute via cron). It may run as the specialist's
+                           own loginname, or as PGLOG['COMMONUSER'] (default
+                           'gdexdata'). When it runs as COMMONUSER it also
+                           submits PBS jobs (via qsub) on behalf of every
+                           specialist whose loginname belongs to the same
+                           group as COMMONUSER and who has a properly
+                           installed pgstart_<loginname> binary (see the
+                           rda_python_setuid README, '-p|--pgstart').
 
 Typical lifecycle of a deferred command:
 
@@ -101,19 +113,28 @@ are accepted, and aliases are noted with each option.
   dscheck -h -AC
 
   List your own daemon control records:
+
   dscheck -GD
 
   List your own active check records:
+
   dscheck -GC
 
   Add a deferred run of a script on PBS:
+
   dscheck -AC -CM myscript.sh -HN PBS
 
   Email yourself the status of all your active checks:
+
   dscheck -EC
 
-  Start the dscheck daemon (typical for the operator):
+  Start the dscheck driver as a long-running daemon (typical for the operator):
+
   dscheck -PC -DM start
+
+  Or run the dscheck driver from crontab every minute (lightweight alternative):
+
+  * * * * * dscheck -PC
 
 2.2 Filters and Special Characters in Queries
 
@@ -439,7 +460,13 @@ Unlock Check - clear leftover lock information after an abnormal exit.
 
 3.3 Check Process Actions
 
-The dscheck daemon starts and restarts deferred commands automatically.
+The dscheck driver starts and restarts deferred commands automatically.
+It can run either as a long-running daemon ('-PC -DM start'), or as a
+short-lived crontab invocation ('-PC' run every minute by cron). The
+driver may run as the specialist's own loginname, or as
+PGLOG['COMMONUSER'] (default 'gdexdata'); when run as COMMONUSER it
+also submits PBS jobs on behalf of every specialist in COMMONUSER's
+group that has a properly installed pgstart_<loginname> binary.
 Operators (and, in non-daemon mode, specialists) can also drive command
 execution from the command line, interrupt running commands, and email
 status summaries.
@@ -482,11 +509,28 @@ Available actions:
     -DM stop, -DM logon, and -DM logoff stop the daemon, enable detailed
     logging, and disable detailed logging respectively.
 
-  Non-daemon mode:
-    Without -DM, dscheck processes the current set of check records once.
-    -WU and -WR must be set explicitly if you want due 'dsupdt'/'dsrqst'
-    work to be added before processing. -CI restricts processing to
-    specific check indices.
+  Crontab mode (cron-driven, no -DM):
+    The same -PC action can be driven from cron instead of running as a
+    long-lived daemon. A typical setup is to run it every minute:
+      * * * * * dscheck -PC
+    Each invocation performs one cycle (add due 'dsupdt'/'dsrqst' work,
+    then start/restart checks) and exits. -WI is ignored because the
+    cron schedule controls the cadence.
+
+  Non-daemon (one-shot) mode:
+    Without -DM and not driven by cron, dscheck processes the current
+    set of check records once. -WU and -WR must be set explicitly if you
+    want due 'dsupdt'/'dsrqst' work to be added before processing. -CI
+    restricts processing to specific check indices.
+
+  Running user (daemon or crontab mode):
+    The driver may run as the specialist's own loginname (handling only
+    that specialist's checks), or as PGLOG['COMMONUSER'] (default
+    'gdexdata'). When run as COMMONUSER, it also submits PBS jobs (via
+    qsub) on behalf of every specialist whose loginname is in the same
+    group as COMMONUSER and who has a properly installed
+    pgstart_<loginname> binary (see rda_python_setuid, option
+    '-p|--pgstart').
 
 3.3.2 Interrupt Check
   -IC or -InterruptCheck, stops a running command and recursively kills
@@ -653,7 +697,8 @@ multiple values is an error.
   input files. Defaults to '<!>'.
 
   -WI or -WaitInterval, the time the dscheck daemon sleeps between
-  cycles. Defaults to 120 seconds (2 minutes).
+  cycles. Defaults to 120 seconds (2 minutes). Ignored when -PC is
+  driven from cron, since the cron schedule controls the cadence.
 
 5.2 Multi-Value Info Options
 
