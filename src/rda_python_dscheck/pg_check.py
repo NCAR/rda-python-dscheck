@@ -190,7 +190,7 @@ class PgCheck(PgOPT, PgCMD):
          "Miss check index per Info option -CI(-CheckIndex)",
          "Need Machine Hostname per -HN for new daemon control",
          "Need Application command name per -CM for new daemon control",
-         "Must be {} to process Checks in daemon mode".format(self.PGLOG['GDEXUSER']),
+         "Must be {} to process Checks in daemon mode".format(self.PGLOG['COMMONUSER']),
          "Miss Command information per Info option -CM(-Command)",
       ]
       erridx = -1
@@ -200,7 +200,7 @@ class PgCheck(PgOPT, PgCMD):
       if 'DM' in self.params:
          if cact != "PC":
             erridx = 0
-         elif self.PGLOG['CURUID'] != self.PGLOG['GDEXUSER']:
+         elif self.PGLOG['CURUID'] != self.PGLOG['COMMONUSER']:
             erridx = 5
          elif 'CI' in self.params:
             erridx = 1
@@ -254,7 +254,7 @@ class PgCheck(PgOPT, PgCMD):
          wtime = self.params['WI'] if 'WI' in self.params else 30
          logon = self.params['LO'] if 'LO' in self.params else 1
          self.start_none_daemon(aname, cact, self.params['LN'], 1, wtime, logon)
-         if not ('CI' in self.params or 'DS' in self.params or self.params['LN'] == self.PGLOG['GDEXUSER']):
+         if not ('CI' in self.params or 'DS' in self.params or self.params['LN'] == self.PGLOG['COMMONUSER']):
             self.set_default_value("SN", self.params['LN'])
       # minimal wait interval in seconds for next check
       self.PGOPT['minlimit'] = self.params['WI'] = self.PGSIG['WTIME']
@@ -493,7 +493,7 @@ class PgCheck(PgOPT, PgCMD):
          return 0
       lidx = self.get_process_host(limits, pgrec['hostname'], pgrec['command'], pgrec['action'], logact)
       if lidx < 0 or self.skip_dscheck_record(pgrec, host, logact): return 0
-      cmd = "pgstart_{} ".format(specialist) if self.PGLOG['CURUID'] == self.PGLOG['GDEXUSER'] else ""
+      cmd = "pgstart_{} ".format(specialist) if self.PGLOG['CURUID'] == self.PGLOG['COMMONUSER'] else ""
       if not self.pgcmp(host, self.PGLOG['PBSNAME'], 1):
          if self.reach_dataset_limit(pgrec): return 0
          cmd += self.get_specialist_shell(specialist) + 'qsub '
@@ -1274,7 +1274,7 @@ class PgCheck(PgOPT, PgCMD):
             if not pgrec:
                self.action_error("Daemon Control Index '{}' is not in RDADB".format(val))
             elif(self.OPTS[self.PGOPT['CACT']][2] > 0 and self.params['LN'] != pgrec['specialist'] and
-                 self.PGLOG['CURUID'] != self.PGLOG['GDEXUSER']):
+                 self.PGLOG['CURUID'] != self.PGLOG['COMMONUSER']):
                self.action_error("{}: must be {}, owner of Daemon Control Index {}".format(self.params['LN'], pgrec['specialist'], val))
       else: # found none-equal condition sign
          pgrec = self.pgmget("dsdaemon", "DISTINCT dindex",
@@ -1310,7 +1310,7 @@ class PgCheck(PgOPT, PgCMD):
                if not pgrec:
                   self.action_error("Check Index '{}' is not in RDADB".format(val))
                elif(self.OPTS[self.PGOPT['CACT']][2] > 0 and self.params['LN'] != pgrec['specialist'] and
-                    self.PGLOG['CURUID'] != self.PGLOG['GDEXUSER']):
+                    self.PGLOG['CURUID'] != self.PGLOG['COMMONUSER']):
                   self.action_error("{}: must be {}, owner of Check Index {}".format(self.params['LN'], pgrec['specialist'], val))
          else: # found none-equal condition sign
             pgrec = self.pgmget("dscheck", "cindex", self.get_field_condition("cindex", self.params['CI'], 0, 1), self.PGOPT['extlog'])
