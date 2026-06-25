@@ -124,27 +124,21 @@ are accepted, and aliases are noted with each option.
   dscheck -h -AC
 
   List your own daemon control records:
-
   dscheck -GD
 
   List your own active check records:
-
   dscheck -GC
 
   Add a deferred run of a script on PBS:
-
   dscheck -AC -CM myscript.sh -HN PBS
 
   Email yourself the status of all your active checks:
-
   dscheck -EC
 
   Start the dscheck driver as a long-running daemon (typical for the operator):
-
   dscheck -PC -DM start
 
   Or run the dscheck driver from crontab every minute (lightweight alternative):
-
   * * * * * dscheck -PC
 
 2.2 Filters and Special Characters in Queries
