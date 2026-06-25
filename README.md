@@ -155,12 +155,21 @@ pywrapper-install -u|--update
 
 ## Documentation sync
 
-The user guide rendered at
+The user guide at
 [gdex-docs-dscheck.readthedocs.io](https://gdex-docs-dscheck.readthedocs.io) is
-generated from `src/rda_python_dscheck/dscheck.usg` in this repository.  When a
-pull request that modifies `dscheck.usg` is merged here, an automated workflow
-converts the updated `dscheck.usg` into the RST-format source files in the
-[gdex-docs-dscheck](https://github.com/NCAR/gdex-docs-dscheck) repository and
-opens a pull request there with the regenerated docs, ready for review and
-merge.  No manual RST editing is required — keep all user-facing content in
-`dscheck.usg` and let the sync produce the docs.
+generated from `src/rda_python_dscheck/dscheck.usg`.  Keep all user-facing
+content in `dscheck.usg` — no manual RST editing is required.
+
+When a pull request modifying `dscheck.usg` is opened, an automated workflow
+converts it into RST source files and the version number from this repository's
+`pyproject.toml` into the
+[gdex-docs-dscheck](https://github.com/NCAR/gdex-docs-dscheck) repository, then
+opens a pull request from `automated-update-branch` against its `main` branch for
+review.
+
+To publish to Read the Docs:
+
+- **Merge** that pull request into `main` to serve the content as the `latest`
+  version.
+- **Create a GitHub release** in `gdex-docs-dscheck` to serve the latest release
+  as the `stable` version.
