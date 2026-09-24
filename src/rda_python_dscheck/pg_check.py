@@ -466,13 +466,19 @@ class PgCheck(PgOPT, PgCMD):
                msgary = self.check_storage_dflags(pgrec['dflags'], pgrec, logact)
                if msgary:
                   einfo = "The Check will be resubmitted after the down storage Up again:\n{}\n{}".format("\n".join(msgary), einfo)
-            sent = 1 if(self.send_customized_email("Chk{}".format(cidx), einfo, emlact) and
-                    self.pgexec("UPDATE dscheck set einfo = NULL WHERE cindex = {}".format(cidx), logact)) else -1
-         else:
-            sent = 0
+            # send_customized_email() returns SUCCESS, FAILURE, or an empty string when
+            # there is nothing to send; only SUCCESS means the email went out
+            if self.send_customized_email("Chk{}".format(cidx), einfo, emlact) == self.SUCCESS:
+               if self.pgexec("UPDATE dscheck set einfo = NULL WHERE cindex = {}".format(cidx), logact):
+                  ecnt += 1
+               else:
+                  self.pglog("Chk{}: emailed but einfo NOT cleared; it is emailed again next time".format(cidx), self.LOGERR)
+            else:
+               self.pglog("Chk{}: einfo NOT emailed and left cached".format(cidx), self.LOGERR)
+         # keep going for the remaining records; a single failure used to stop the whole
+         # pass, and since the failing record is left alone it blocked every einfo behind
+         # it on every later pass too
          self.lock_dscheck(cidx, 0)
-         if sent == -1: break
-         ecnt += sent
       if ecnt and cnt > 1: self.pglog("{} of {} DSCHECK emails sent on {}".format(ecnt, cnt, self.PGLOG['HOSTNAME']), self.WARNLG)
 
    # start a dscheck job for given dscheck record
